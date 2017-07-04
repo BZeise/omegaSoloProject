@@ -24,6 +24,7 @@ function GameController(GameService) {  // add in , $location eventually
   var vm = this;
 
   currentQuestion = 0;
+  score = 0;
 
   vm.showQuestions = function() {
     // console.log( 'in showQuestions' );
@@ -55,6 +56,8 @@ function GameController(GameService) {  // add in , $location eventually
     if (currentQuestion == vm.questionsArray.length) {
       console.log("End of game!");
       vm.qTS = {};
+      // use vm.go to go to another view probably
+      vm.qTS.question = "Score: " + score + " / " + vm.questionsArray.length;
     } else {
       // take the next question from the provided array
       // vm.qts = vm.questionToShow
@@ -75,6 +78,7 @@ function GameController(GameService) {  // add in , $location eventually
   vm.correct = function() {
     console.log("You're right!");
     // increment current game stats
+    score++;
     // increment user stats
   };
 
