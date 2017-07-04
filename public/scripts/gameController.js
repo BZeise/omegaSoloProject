@@ -6,11 +6,11 @@ var app = angular.module('myApp', ['ngRoute']);
 // declare config for ngRoute to show different pages
 app.config(function($routeProvider) {
     $routeProvider.when('/', {
+        templateUrl: "views/partials/landing.html",
+        controller: "GameController"
+    }).when('/game', {
         templateUrl: "views/partials/game.html",
         controller: "GameController"
-    // }).when('/register', {
-    //     templateUrl: "views/partials/register.html",
-    //     controller: "GameController"
     // }).when('/loggedIn', {
     //     templateUrl: "views/partials/loggedIn.html",
     //     controller: "GameController"
@@ -20,7 +20,7 @@ app.config(function($routeProvider) {
 // declare controller
 app.controller('GameController', GameController);
 
-function GameController(GameService) {  // add in , $location eventually
+function GameController(GameService, $location) {
   var vm = this;
 
   currentQuestion = 0;
@@ -86,6 +86,12 @@ function GameController(GameService) {  // add in , $location eventually
     console.log("Sorry, incorrect!");
     // increment current game stats (just totals)
     // increment user stats (just totals)
+  };
+
+
+
+  vm.go = function(path) {
+      $location.path(path);
   };
 
   // vm.showSearch = function() {
