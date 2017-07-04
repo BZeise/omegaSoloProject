@@ -1,3 +1,10 @@
-<div ng-repeat="x in gc.questionsToShow">
-  {{x.question}}
+<div>
+  {{gc.qTS.question}}
+  <ul>
+    <li ng-repeat="x in gc.qTS.possibleAnswers">
+      <button class="answerButton" ng-click="gc.answer(x)">
+        {{x}}
+      </button>
+    </li>
+  </ul>
 </div>
