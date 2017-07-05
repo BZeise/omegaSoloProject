@@ -8,6 +8,12 @@ app.config(function($routeProvider) {
     $routeProvider.when('/', {
         templateUrl: "views/partials/landing.html",
         controller: "GameController"
+    }).when('/login', {
+        templateUrl: "views/partials/login.html",
+        controller: "GameController"
+    }).when('/register', {
+        templateUrl: "views/partials/register.html",
+        controller: "GameController"
     }).when('/game', {
         templateUrl: "views/partials/game.html",
         controller: "GameController"
@@ -93,6 +99,8 @@ function GameController(GameService, $location) {
   vm.go = function(path) {
       $location.path(path);
   };
+
+
 
   // vm.showSearch = function() {
   //   console.log( 'in showSearch' );

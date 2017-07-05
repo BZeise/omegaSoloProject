@@ -1,5 +1,9 @@
 <div>
   <input type="text" placeholder="User Name?">
-  <button ng-click="gc.go('/game')">Start a New Game</button>
-
+  <button ng-click="gc.go('/game')">Start as Guest</button>
+  <p>
+    Returning?<button ng-click="gc.go('/login')">Login!</button>
+    Or<button ng-click="gc.go('/register')">Register!</button>
+  </p>
+  <!-- <div class="userDiv">Userpage</div> -->
 </div>

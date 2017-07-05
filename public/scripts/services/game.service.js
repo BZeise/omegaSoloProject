@@ -3,6 +3,8 @@
 app.service( 'GameService', function( $http ) {
   var sv = this;
 
+  // function to use API call to get list of trivia questions
+  // future:  implement optional selections
   sv.getQuestions = function () {
     return $http.get ('https://opentdb.com/api.php?amount=10&type=multiple' ).then( function( response ){
       sv.theQuestions = response.data.results;
