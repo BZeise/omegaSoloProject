@@ -1,5 +1,5 @@
 <div>
-  <button ng-click="gc.showQuestions()">Begin</button>
+  <!-- <button ng-hide="gc.gameInProgress" ng-click="gc.beginGame()">Begin</button> -->
   <p>{{gc.qTS.question}}</p>
   <ul>
     <li ng-repeat="x in gc.qTS.possibleAnswers">
@@ -8,4 +8,5 @@
       </button>
     </li>
   </ul>
+  <button ng-click="gc.go('/')">Quit Game</button>
 </div>

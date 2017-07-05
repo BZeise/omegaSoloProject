@@ -17,9 +17,12 @@ app.config(function($routeProvider) {
     }).when('/game', {
         templateUrl: "views/partials/game.html",
         controller: "GameController"
-    // }).when('/loggedIn', {
-    //     templateUrl: "views/partials/loggedIn.html",
-    //     controller: "GameController"
+    }).when('/gameLeader', {
+        templateUrl: "views/partials/gameLeader.html",
+        controller: "GameController"
+    }).when('/gamePlayer', {
+        templateUrl: "views/partials/gamePlayer.html",
+        controller: "GameController"
     });
 });
 
@@ -31,9 +34,11 @@ function GameController(GameService, $location) {
 
   currentQuestion = 0;
   score = 0;
+  vm.gameInProgress = false;
+  vm.userState = '';
 
-  vm.showQuestions = function() {
-    // console.log( 'in showQuestions' );
+  vm.beginGame = function() {
+    // console.log( 'in beginGame' );
     GameService.getQuestions().then(function(response){
       vm.questionsArray = GameService.theQuestions;
       console.log('vm.questionsArray is: ', vm.questionsArray);
@@ -42,9 +47,9 @@ function GameController(GameService, $location) {
       // need to figure out how to iterate through, one at a time
       currentQuestion = -1;
       vm.nextQuestion();
-
+      vm.gameInProgress = true;
     });
-  }; // end showQuestions
+  }; // end beginGame
 
   vm.answer = function(answer) {
     if (answer == vm.qTS.correct_answer) {
@@ -64,7 +69,9 @@ function GameController(GameService, $location) {
       vm.qTS = {};
       // use vm.go to go to another view probably
       vm.qTS.question = "Score: " + score + " / " + vm.questionsArray.length;
-    } else {
+      vm.gameInProgress = false;
+    } // end END GAME SCENARIO
+    else {
       // take the next question from the provided array
       // vm.qts = vm.questionToShow
       vm.qTS = vm.questionsArray[currentQuestion];
@@ -95,12 +102,29 @@ function GameController(GameService, $location) {
   };
 
 
-
+  // general navigation function
+  // contains logic to start game as GAMELEADER if no current game is open
   vm.go = function(path) {
+    // if you're starting a game...
+    if( path == '/start' ) {
+      // and if a game is NOT already in progress...
+      if ( vm.gameInProgress == false ) {
+        // then go to Game Leader Screen
+        $location.path('/gameLeader');
+      } else {
+        // else go to Game Player Screen
+        $location.path('/gamePlayer');
+      }
+    } else {// if not starting a game, just go to path
       $location.path(path);
+    }
   };
 
-
+  vm.getOptions = function() {
+    GameService.getCategories().then(function(response){
+      vm.categories = GameService.theCategories;
+    });
+  };
 
   // vm.showSearch = function() {
   //   console.log( 'in showSearch' );

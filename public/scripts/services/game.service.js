@@ -11,6 +11,12 @@ app.service( 'GameService', function( $http ) {
     });
   }; // end getQuestions
 
+  sv.getCategories = function () {
+    return $http.get ('https://opentdb.com/api_category.php' ).then( function( response ){
+      sv.theCategories = response.data.trivia_categories;
+    });
+  }; // end getCategories
+
   // sv.getSearch = function(searchFor) {
   //   // assemble search term from ng-model "searchInput"
   //   var searchUrl = "http://api.giphy.com/v1/gifs/search?q=";
