@@ -33,8 +33,8 @@ function GameController(GameService, $location) {
   var vm = this;
 
   // game operation variables
-  currentQuestion = 0;
-  score = 0;
+  vm.currentQuestion = 0;
+  vm.score = 0;
   vm.gameInProgress = false;
 
   // game option variables
@@ -42,6 +42,8 @@ function GameController(GameService, $location) {
   vm.category = '';
   vm.difficulty = '';
   vm.type = '';
+  vm.lastAnswerWasCorrect = '';
+  vm.firstQuestion = true;
 
   // beginGame function gets questions based on selected options
   // then, launches game
@@ -66,7 +68,7 @@ function GameController(GameService, $location) {
       console.log('vm.questionsArray is: ', vm.questionsArray);
 
       // preps the next question
-      currentQuestion = -1;
+      vm.currentQuestion = -1;
       vm.nextQuestion();
       vm.gameInProgress = true;
     });
@@ -77,25 +79,27 @@ function GameController(GameService, $location) {
       vm.correct();
       vm.nextQuestion();
     } else {
-      vm.incorrect();
+      vm.incorrect(answer);
       vm.nextQuestion();
     }
   }; // end answer
 
   vm.nextQuestion = function() {
     // increment question counter
-    currentQuestion++;
-    if (currentQuestion == vm.questionsArray.length) {
+    vm.currentQuestion++;
+    if (vm.currentQuestion == vm.questionsArray.length) {
       console.log("End of game!");
       vm.qTS = {};
       // use vm.go to go to another view probably
-      vm.qTS.question = "Score: " + score + " / " + vm.questionsArray.length;
+      // and that would stop using this next line, which is totally janky
+      vm.qTS.question = "Score: " + vm.score + " / " + vm.questionsArray.length;
       vm.gameInProgress = false;
+      vm.lastAnswerWasCorrect = '';
     } // end END GAME SCENARIO
     else {
       // take the next question from the provided array
       // vm.qts is vm.questionToShow
-      vm.qTS = vm.questionsArray[currentQuestion];
+      vm.qTS = vm.questionsArray[vm.currentQuestion];
       // console.log('this one:', vm.qTS);
 
       // declare possibleAnswers, which will be all answers correct or not
@@ -115,13 +119,21 @@ function GameController(GameService, $location) {
 
   vm.correct = function() {
     console.log("You're right!");
+    vm.lastAnswerWasCorrect = true;
+    vm.firstQuestion = false;
+    vm.rightAnswer = vm.qTS.correct_answer;
     // increment current game stats
-    score++;
+    vm.score++;
     // increment user stats
   };
 
-  vm.incorrect = function() {
-    console.log("Sorry, incorrect!");
+  vm.incorrect = function(wrongAnswer) {
+    console.log("Sorry,", wrongAnswer, "is incorrect!");
+    vm.lastAnswerWasCorrect = false;
+    vm.firstQuestion = false;
+    vm.wrongAnswer = wrongAnswer;
+    vm.rightAnswer = vm.qTS.correct_answer;
+    console.log('right and wrong:', vm.rightAnswer, vm.wrongAnswer);
     // increment current game stats (just totals)
     // increment user stats (just totals)
   };

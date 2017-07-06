@@ -1,6 +1,4 @@
 <div>
-  <button ng-hide="gc.gameInProgress" ng-click="gc.beginGame(); gc.go('/game')">Begin</button>
-
   <md-card>
     <md-card-title>
       <md-card-title-text>
@@ -25,7 +23,7 @@
         <md-input-container>
           <label>Category</label>
           <md-select ng-model="gc.category">
-            <md-option><em>None</em></md-option>
+            <md-option value=""><em>None</em></md-option>
             <md-option ng-repeat="x in gc.categories" ng-value="x">
               {{x.name}}
             </md-option>
@@ -58,6 +56,6 @@
     </md-card-content>
   </md-card>
 
-
   <button ng-click="gc.go('/')">Quit Game</button>
+  <md-button class="md-raised md-primary" ng-hide="gc.gameInProgress" ng-click="gc.beginGame(); gc.go('/game')">Begin</md-button>
 </div>
