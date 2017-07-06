@@ -3,7 +3,7 @@
     <md-card-title>
       <md-card-title-text>
         <span class="md-headline">Game Options</span>
-        <span class="md-subhead">Leave blank for default options</span>
+        <span class="md-subhead">LEAVE BLANK for DEFAULT options</span>
       </md-card-title-text>
     </md-card-title>
 
@@ -57,5 +57,6 @@
   </md-card>
 
   <button ng-click="gc.go('/')">Quit Game</button>
-  <md-button class="md-raised md-primary" ng-hide="gc.gameInProgress" ng-click="gc.beginGame(); gc.go('/game')">Begin</md-button>
+  <md-button class="md-raised md-primary" ng-hide="gc.gameInProgress"
+    ng-click="gc.beginGame(); gc.go('/game')">Begin</md-button>
 </div>

@@ -23,6 +23,9 @@ app.config(function($routeProvider) {
     }).when('/gamePlayer', {
         templateUrl: "views/partials/gamePlayer.html",
         controller: "GameController"
+    }).when('/gameEnd', {
+        templateUrl: "views/partials/gameEnd.html",
+        controller: "GameController"
     });
 });
 
@@ -71,6 +74,10 @@ function GameController(GameService, $location) {
       vm.currentQuestion = -1;
       vm.nextQuestion();
       vm.gameInProgress = true;
+
+      // timer
+      vm.startTime = new Date();
+      console.log('startTime is:', vm.startTime);
     });
   }; // end beginGame
 
@@ -87,14 +94,20 @@ function GameController(GameService, $location) {
   vm.nextQuestion = function() {
     // increment question counter
     vm.currentQuestion++;
+    // check if game is over (no more questions left in array)
     if (vm.currentQuestion == vm.questionsArray.length) {
       console.log("End of game!");
       vm.qTS = {};
       // use vm.go to go to another view probably
       // and that would stop using this next line, which is totally janky
-      vm.qTS.question = "Score: " + vm.score + " / " + vm.questionsArray.length;
+      vm.go('/gameEnd');
+      // vm.qTS.question = "Score: " + vm.score + " / " + vm.questionsArray.length;
       vm.gameInProgress = false;
       vm.lastAnswerWasCorrect = '';
+
+      // timer
+      vm.endTime = new Date();
+      console.log('endTime is:', vm.endTime);
     } // end END GAME SCENARIO
     else {
       // take the next question from the provided array
