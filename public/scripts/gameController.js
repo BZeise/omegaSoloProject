@@ -32,19 +32,40 @@ app.controller('GameController', GameController);
 function GameController(GameService, $location) {
   var vm = this;
 
+  // game operation variables
   currentQuestion = 0;
   score = 0;
   vm.gameInProgress = false;
-  vm.userCategory = '';
 
+  // game option variables
+  vm.numQuestions = 10;
+  vm.category = '';
+  vm.difficulty = '';
+  vm.type = '';
+
+  // beginGame function gets questions based on selected options
+  // then, launches game
   vm.beginGame = function() {
     // console.log( 'in beginGame' );
-    GameService.getQuestions().then(function(response){
+
+    // construct API string from selected options
+    apiString = 'https://opentdb.com/api.php?amount=';
+    apiString += vm.numQuestions;
+    if (vm.category != '') {
+      apiString += '&category=' + vm.category.id;
+    }
+    if (vm.difficulty != '') {
+      apiString += '&difficulty=' + vm.difficulty;
+    }
+    if (vm.type != '') {
+      apiString += '&type=' + vm.type;
+    } // end apiString construction
+
+    GameService.getQuestions(apiString).then(function(response){
       vm.questionsArray = GameService.theQuestions;
       console.log('vm.questionsArray is: ', vm.questionsArray);
 
-      // just picking one question for now, forcing type: "multiple"
-      // need to figure out how to iterate through, one at a time
+      // preps the next question
       currentQuestion = -1;
       vm.nextQuestion();
       vm.gameInProgress = true;
@@ -73,12 +94,16 @@ function GameController(GameService, $location) {
     } // end END GAME SCENARIO
     else {
       // take the next question from the provided array
-      // vm.qts = vm.questionToShow
+      // vm.qts is vm.questionToShow
       vm.qTS = vm.questionsArray[currentQuestion];
+      // console.log('this one:', vm.qTS);
 
       // declare possibleAnswers, which will be all answers correct or not
       vm.qTS.possibleAnswers = vm.qTS.incorrect_answers;
+      // console.log('this one:', vm.qTS.possibleAnswers);
       vm.qTS.possibleAnswers.push(vm.qTS.correct_answer);
+      // console.log('this one:', vm.qTS.possibleAnswers);
+      // something weird here!  What's the difference between those two logs?!
 
       // shuffles the order to hide the correct_answer
       vm.qTS.possibleAnswers.sort(function() {

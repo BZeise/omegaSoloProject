@@ -2,102 +2,62 @@
   <button ng-hide="gc.gameInProgress" ng-click="gc.beginGame(); gc.go('/game')">Begin</button>
 
   <md-card>
-      <!-- <md-card-title>
-        <md-card-title-text>
-          <span class="md-headline">Account Preferences</span>
-          <span class="md-subhead">Tell us a little about you.</span>
-        </md-card-title-text>
-      </md-card-title> -->
-
-      <md-card-content>
-        <div layout="row">
-          <!-- <md-input-container>
-            <label>Street Name</label>
-            <input>
-          </md-input-container>
-
-          <md-input-container>
-            <label>City</label>
-            <input>
-          </md-input-container> -->
-
-          <md-input-container>
-            <label>Category</label>
-            <md-select ng-model="gc.userCategory">
-              <md-option><em>None</em></md-option>
-              <md-option ng-repeat="x in gc.categories" ng-value="x">
-                 <!-- ng-disabled="$index === 1" -->
-                <!-- ng-value="x.abbrev" -->
-                {{x.name}}
-              </md-option>
-            </md-select>
-          </md-input-container>
-
-        </div>
-      </md-card-content>
-    </md-card>
-
-
-  <button ng-click="gc.go('/')">Quit Game</button>
-</div>
-
-<!-- <md-card>
     <md-card-title>
       <md-card-title-text>
-        <span class="md-headline">Account Preferences</span>
-        <span class="md-subhead">Tell us a little about you.</span>
+        <span class="md-headline">Game Options</span>
+        <span class="md-subhead">Leave blank for default options</span>
       </md-card-title-text>
     </md-card-title>
 
     <md-card-content>
+
+      <!-- number of questions selector -->
       <div layout="row">
         <md-input-container>
-          <label>Street Name</label>
-          <input>
+          <label># of Questions</label>
+          <!-- this should be longer to get the whole label showing -->
+          <input ng-model="gc.numQuestions" type="number" step="5" min="5" max="50">
         </md-input-container>
+      </div>
 
+      <!-- category selector -->
+      <div layout="row">
         <md-input-container>
-          <label>City</label>
-          <input>
-        </md-input-container>
-
-        <md-input-container>
-          <label>State</label>
-          <md-select ng-model="gc.userState">
+          <label>Category</label>
+          <md-select ng-model="gc.category">
             <md-option><em>None</em></md-option>
-            <md-option ng-repeat="state in gc.states" ng-value="state.abbrev" ng-disabled="$index === 1">
-              {{state.abbrev}}
+            <md-option ng-repeat="x in gc.categories" ng-value="x">
+              {{x.name}}
             </md-option>
           </md-select>
         </md-input-container>
       </div>
+
+      <!-- difficulty selector -->
+      <div layout="row">
+        <md-input-container>
+          <!-- <div layout="row" layout-align="space-between center"> -->
+          <md-select ng-model="gc.difficulty" placeholder="Difficulty">
+            <md-option value="easy">Easy</md-option>
+            <md-option value="medium">Medium</md-option>
+            <md-option value="hard">Hard</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+
+      <!-- type selector -->
+      <div layout="row">
+        <md-input-container>
+          <md-select ng-model="gc.type" placeholder="Type">
+            <md-option value="multiple">Multiple Choice</md-option>
+            <md-option value="boolean">True / False</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+
     </md-card-content>
-  </md-card> -->
+  </md-card>
 
 
-<!-- <div ng-controller="SelectOptGroupController" class="md-padding" ng-cloak>
-  <div>
-    <h1 class="md-title">Pick your pizza below</h1>
-    <div layout="row">
-      <md-input-container style="margin-right: 10px;">
-        <label>Size</label>
-        <md-select ng-model="size">
-          <md-option ng-repeat="size in sizes" value="{{size}}">{{size}}</md-option>
-        </md-select>
-      </md-input-container>
-      <md-input-container>
-        <label>Topping</label>
-        <md-select ng-model="selectedToppings" multiple>
-          <md-optgroup label="Meats">
-            <md-option ng-value="topping.name" ng-repeat="topping in toppings | filter: {category: 'meat' }">{{topping.name}}</md-option>
-          </md-optgroup>
-          <md-optgroup label="Veggies">
-            <md-option ng-value="topping.name" ng-repeat="topping in toppings | filter: {category: 'veg' }">{{topping.name}}</md-option>
-          </md-optgroup>
-        </md-select>
-      </md-input-container>
-    </div>
-    <p ng-if="selectedToppings">You ordered a {{size.toLowerCase()}} pizza with
-    {{printSelectedToppings()}}.</p>
-  </div>
-</div> -->
+  <button ng-click="gc.go('/')">Quit Game</button>
+</div>

@@ -5,14 +5,15 @@ app.service( 'GameService', function( $http ) {
 
   // function to use API call to get list of trivia questions
   // future:  implement optional selections
-  sv.getQuestions = function () {
-    return $http.get ('https://opentdb.com/api.php?amount=10&type=multiple' ).then( function( response ){
+  sv.getQuestions = function ( url ) {
+    return $http.get ( url ).then( function( response ){
+      console.log('in sv.getQuestions, response is:', response);
       sv.theQuestions = response.data.results;
     });
   }; // end getQuestions
 
   sv.getCategories = function () {
-    return $http.get ('https://opentdb.com/api_category.php' ).then( function( response ){
+    return $http.get ( 'https://opentdb.com/api_category.php' ).then( function( response ){
       sv.theCategories = response.data.trivia_categories;
     });
   }; // end getCategories
