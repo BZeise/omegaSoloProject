@@ -1,7 +1,7 @@
 // console.log( 'gameController.js loaded' );
 
 // declare app
-var app = angular.module('myApp', ['ngRoute']);
+var app = angular.module('myApp', ['ngRoute', 'ngMaterial']);
 
 // declare config for ngRoute to show different pages
 app.config(function($routeProvider) {
@@ -35,7 +35,7 @@ function GameController(GameService, $location) {
   currentQuestion = 0;
   score = 0;
   vm.gameInProgress = false;
-  vm.userState = '';
+  vm.userCategory = '';
 
   vm.beginGame = function() {
     // console.log( 'in beginGame' );

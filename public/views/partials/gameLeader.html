@@ -23,9 +23,10 @@
 
           <md-input-container>
             <label>Category</label>
-            <md-select ng-model="gc.userState">
+            <md-select ng-model="gc.userCategory">
               <md-option><em>None</em></md-option>
-              <md-option ng-repeat="x in gc.categories" ng-value="x" ng-disabled="$index === 1">
+              <md-option ng-repeat="x in gc.categories" ng-value="x">
+                 <!-- ng-disabled="$index === 1" -->
                 <!-- ng-value="x.abbrev" -->
                 {{x.name}}
               </md-option>
