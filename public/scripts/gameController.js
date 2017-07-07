@@ -77,7 +77,7 @@ function GameController(GameService, $location) {
 
       // timer
       vm.startTime = new Date();
-      console.log('startTime is:', vm.startTime);
+      // console.log('startTime is:', vm.startTime);
     });
   }; // end beginGame
 
@@ -94,6 +94,8 @@ function GameController(GameService, $location) {
   vm.nextQuestion = function() {
     // increment question counter
     vm.currentQuestion++;
+
+    // begin END GAME SCENARIO
     // check if game is over (no more questions left in array)
     if (vm.currentQuestion == vm.questionsArray.length) {
       console.log("End of game!");
@@ -107,13 +109,14 @@ function GameController(GameService, $location) {
 
       // timer
       vm.endTime = new Date();
-      console.log('endTime is:', vm.endTime);
     } // end END GAME SCENARIO
+
     else {
       // take the next question from the provided array
       // vm.qts is vm.questionToShow
       vm.qTS = vm.questionsArray[vm.currentQuestion];
       // console.log('this one:', vm.qTS);
+
 
       // declare possibleAnswers, which will be all answers correct or not
       vm.qTS.possibleAnswers = vm.qTS.incorrect_answers;
@@ -127,11 +130,11 @@ function GameController(GameService, $location) {
         return 0.5 - Math.random();
       });
     }
-    // vm.reload();
+
   }; // end vm.nextQuestion
 
   vm.correct = function() {
-    console.log("You're right!");
+    // console.log("You're right!");
     vm.lastAnswerWasCorrect = true;
     vm.firstQuestion = false;
     vm.rightAnswer = vm.qTS.correct_answer;
@@ -141,7 +144,7 @@ function GameController(GameService, $location) {
   };
 
   vm.incorrect = function(wrongAnswer) {
-    console.log("Sorry,", wrongAnswer, "is incorrect!");
+    // console.log("Sorry,", wrongAnswer, "is incorrect!");
     vm.lastAnswerWasCorrect = false;
     vm.firstQuestion = false;
     vm.wrongAnswer = wrongAnswer;
@@ -168,21 +171,69 @@ function GameController(GameService, $location) {
     } else {// if not starting a game, just go to path
       $location.path(path);
     }
-  };
+  }; // end vm.go
 
   vm.getOptions = function() {
     GameService.getCategories().then(function(response){
       vm.categories = GameService.theCategories;
     });
+  }; // end vm.getOptions
+
+
+  // LOG IN CODE
+
+  vm.registerUser = function() {
+      console.log('vm.registerUser clicked!');
+      if (vm.inputed.password !== vm.inputed.password2) {
+          swal("Whoops!", "passwords don't match!", "error");
+      } else {
+          var credentials = {
+              username: vm.inputed.username,
+              password: vm.inputed.password
+          };
+          GameService.postRegister(credentials).then(function(response) {
+              if (response.status == 201) {
+                  vm.go('/');
+                  vm.inputed.username = '';
+                  vm.inputed.password = '';
+                  vm.inputed.password2 = '';
+              } else {
+              }
+          });
+      }
+  };
+  vm.loginUser = function() {
+      console.log('vm.registerUser clicked!');
+      var credentials = {
+          username: vm.inputed.username,
+          password: vm.inputed.password
+      };
+      GameService.postLogin(credentials).then(function(response) {
+          if (response.data == 'we got it') {
+              vm.go('/start');
+              vm.name = credentials.username;
+              console.log(vm.name, credentials.username);
+
+              vm.inputed.username = '';
+              vm.inputed.password = '';
+              // vm.inputed = '';
+          } else {
+            swal("Whoah there!", "Check yer info, friendo", "error");
+          }
+      });
+  };
+  vm.logOut = function() {
+      vm.name = '';
+      vm.go('/');
   };
 
-  // vm.showSearch = function() {
-  //   console.log( 'in showSearch' );
-  //   GameService.getSearch(vm.searchInput).then(function(response){
-  //     // console.log('in GameService.getSearch, response it:', response);
-  //     vm.questionsArray = GameService.searchGif;
-  //
-  //   });
-  // };
+  // END LOG IN CODE
+
 
 }
+
+app.filter('secondsToDateTime', function() {
+  return function(seconds) {
+      return new Date(1970, 0, 1).setSeconds(seconds);
+  };
+}); // time filter used in game end screen

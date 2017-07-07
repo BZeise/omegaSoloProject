@@ -1,8 +1,10 @@
 <div>
-  <input type="text" placeholder="User Name?">
-  <input type="text" placeholder="Password?">
-  <button ng-click="gc.go('/start')">Login!</button>
-  <!-- add in function to test login -->
-  <!-- <div class="userDiv">Userpage</div> -->
-  <button ng-click="gc.go('/')">Cancel</button>
+  <form name="login">
+    <input type="text" placeholder="User Name?" ng-model="gc.inputed.username" required>
+    <input type="password" placeholder="Password?" ng-model="gc.inputed.password" required>
+    <button ng-click="gc.loginUser()" ng-disabled="login.$invalid">Login!</button>
+    <!-- add in function to test login -->
+    <!-- <div class="userDiv">Userpage</div> -->
+    <button ng-click="gc.go('/')">Cancel</button>
+  </form>
 </div>

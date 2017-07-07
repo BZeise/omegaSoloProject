@@ -1,8 +1,10 @@
 <div>
   Final score:  {{gc.score}} / {{gc.numQuestions}}
-  started at: {{gc.startTime}},
-  ended at:  {{gc.endTime}},
-  Total time:  {{(gc.endTime - gc.startTime) / 100 | number:0}},
+  <!-- started at: {{gc.startTime}}, -->
+  <!-- ended at:  {{gc.endTime}}, -->
+  Total time:  {{(gc.endTime - gc.startTime) / 1000 | number:1}}s
+  <!-- Total time:  {{(gc.endTime - gc.startTime) | secondsToDateTime | date:'m:ss'}}, <br> -->
+  <!-- Total time:  {{(gc.endTime - gc.startTime) | date:'m:ss'}}, <br> -->
   <!-- Total time:  {{(gc.endTime - gc.startTime) | duration:'mm:ss'}} -->
   <p ng-show="gc.lastAnswerWasCorrect">
     {{gc.rightAnswer}} was correct!
