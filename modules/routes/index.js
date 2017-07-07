@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var bcrypt = require('bcrypt');  // did this fail to install?
+var bcrypt = require('bcrypt');
 var bodyParser = require('body-parser');
 var user = require('../user'); // add in user route
 

@@ -31,6 +31,15 @@ app.service( 'GameService', function( $http ) {
       return response;
     });
   };
+  sv.getCurrentUser = function() {
+    console.log('in sv.getCurrentUser, wooooo');
+    return $http.get('/users').then(function( response ){
+      console.log('back from /users get with response: ', response);
+      sv.currentUser = response;
+      console.log('this one:, user is:', sv.currentUser);
+      return response;
+    });
+  };
 
 
 });

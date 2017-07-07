@@ -1,9 +1,11 @@
 <div>
-  <input type="text" placeholder="User Name?" ng-model="gc.inputed.username" required>
-  <input type="password" placeholder="Password?" ng-model="gc.inputed.password" required>
-  <input type="password" placeholder="Confirm password?" ng-model="gc.inputed.password2" required>
-  <button ng-click="gc.registerUser()" ng-disabled="register.$invalid">Register!</button>
-  <!-- add in function to test login -->
-  <!-- <div class="userDiv">Userpage</div> -->
-  <button ng-click="gc.go('/')">Cancel</button>
+  <form name="register">
+    <input type="text" placeholder="User Name?" ng-model="gc.inputed.username" required>
+    <input type="password" placeholder="Password?" ng-model="gc.inputed.password" required>
+    <input type="password" placeholder="Confirm password?" ng-model="gc.inputed.password2" required>
+    <button ng-click="gc.registerUser()" ng-disabled="register.$invalid">Register!</button>
+    <!-- add in function to test login -->
+    <!-- <div class="userDiv">Userpage</div> -->
+    <button ng-click="gc.go('/')">Cancel</button>
+  </form>
 </div>

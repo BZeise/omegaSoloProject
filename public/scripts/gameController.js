@@ -5,28 +5,28 @@ var app = angular.module('myApp', ['ngRoute', 'ngMaterial']);
 
 // declare config for ngRoute to show different pages
 app.config(function($routeProvider) {
-    $routeProvider.when('/', {
-        templateUrl: "views/partials/landing.html",
-        controller: "GameController"
-    }).when('/login', {
-        templateUrl: "views/partials/login.html",
-        controller: "GameController"
-    }).when('/register', {
-        templateUrl: "views/partials/register.html",
-        controller: "GameController"
-    }).when('/game', {
-        templateUrl: "views/partials/game.html",
-        controller: "GameController"
-    }).when('/gameLeader', {
-        templateUrl: "views/partials/gameLeader.html",
-        controller: "GameController"
-    }).when('/gamePlayer', {
-        templateUrl: "views/partials/gamePlayer.html",
-        controller: "GameController"
-    }).when('/gameEnd', {
-        templateUrl: "views/partials/gameEnd.html",
-        controller: "GameController"
-    });
+  $routeProvider.when('/', {
+    templateUrl: "views/partials/landing.html",
+    controller: "GameController"
+  }).when('/login', {
+    templateUrl: "views/partials/login.html",
+    controller: "GameController"
+  }).when('/register', {
+    templateUrl: "views/partials/register.html",
+    controller: "GameController"
+  }).when('/game', {
+    templateUrl: "views/partials/game.html",
+    controller: "GameController"
+  }).when('/gameLeader', {
+    templateUrl: "views/partials/gameLeader.html",
+    controller: "GameController"
+  }).when('/gamePlayer', {
+    templateUrl: "views/partials/gamePlayer.html",
+    controller: "GameController"
+  }).when('/gameEnd', {
+    templateUrl: "views/partials/gameEnd.html",
+    controller: "GameController"
+  });
 });
 
 // declare controller
@@ -66,7 +66,7 @@ function GameController(GameService, $location) {
       apiString += '&type=' + vm.type;
     } // end apiString construction
 
-    GameService.getQuestions(apiString).then(function(response){
+    GameService.getQuestions(apiString).then(function(response) {
       vm.questionsArray = GameService.theQuestions;
       console.log('vm.questionsArray is: ', vm.questionsArray);
 
@@ -110,7 +110,6 @@ function GameController(GameService, $location) {
       // timer
       vm.endTime = new Date();
     } // end END GAME SCENARIO
-
     else {
       // take the next question from the provided array
       // vm.qts is vm.questionToShow
@@ -159,22 +158,22 @@ function GameController(GameService, $location) {
   // contains logic to start game as GAMELEADER if no current game is open
   vm.go = function(path) {
     // if you're starting a game...
-    if( path == '/start' ) {
+    if (path == '/start') {
       // and if a game is NOT already in progress...
-      if ( vm.gameInProgress == false ) {
+      if (vm.gameInProgress == false) {
         // then go to Game Leader Screen
         $location.path('/gameLeader');
       } else {
         // else go to Game Player Screen
         $location.path('/gamePlayer');
       }
-    } else {// if not starting a game, just go to path
+    } else { // if not starting a game, just go to path
       $location.path(path);
     }
   }; // end vm.go
 
   vm.getOptions = function() {
-    GameService.getCategories().then(function(response){
+    GameService.getCategories().then(function(response) {
       vm.categories = GameService.theCategories;
     });
   }; // end vm.getOptions
@@ -183,48 +182,54 @@ function GameController(GameService, $location) {
   // LOG IN CODE
 
   vm.registerUser = function() {
-      console.log('vm.registerUser clicked!');
-      if (vm.inputed.password !== vm.inputed.password2) {
-          swal("Whoops!", "passwords don't match!", "error");
-      } else {
-          var credentials = {
-              username: vm.inputed.username,
-              password: vm.inputed.password
-          };
-          GameService.postRegister(credentials).then(function(response) {
-              if (response.status == 201) {
-                  vm.go('/');
-                  vm.inputed.username = '';
-                  vm.inputed.password = '';
-                  vm.inputed.password2 = '';
-              } else {
-              }
-          });
-      }
-  };
-  vm.loginUser = function() {
-      console.log('vm.registerUser clicked!');
+    console.log('vm.registerUser clicked!');
+    if (vm.inputed.password !== vm.inputed.password2) {
+      swal("Whoops!", "Passwords don't match!", "error");
+    } else {
       var credentials = {
-          username: vm.inputed.username,
-          password: vm.inputed.password
+        username: vm.inputed.username,
+        password: vm.inputed.password
       };
-      GameService.postLogin(credentials).then(function(response) {
-          if (response.data == 'we got it') {
-              vm.go('/start');
-              vm.name = credentials.username;
-              console.log(vm.name, credentials.username);
-
-              vm.inputed.username = '';
-              vm.inputed.password = '';
-              // vm.inputed = '';
-          } else {
-            swal("Whoah there!", "Check yer info, friendo", "error");
-          }
+      GameService.postRegister(credentials).then(function(response) {
+        if (response.status == 201) {
+          vm.go('/');
+          vm.inputed.username = '';
+          vm.inputed.password = '';
+          vm.inputed.password2 = '';
+        } else {}
       });
+    }
   };
+
+  vm.loginUser = function() {
+    console.log('vm.loginUser clicked!');
+    var credentials = {
+      username: vm.inputed.username,
+      password: vm.inputed.password
+    };
+    GameService.postLogin(credentials).then(function(response) {
+      if (response.data == 'we got it') {
+        vm.go('/start');
+        vm.name = credentials.username;
+        // console.log('in vm.loginUser', vm.name, credentials.username);
+        // console.log('credentials is: ', credentials);
+        // console.log('response is:', response);
+
+        vm.inputed.username = '';
+        vm.inputed.password = '';
+        // vm.currentUser = GameService.getCurrentUser();
+        GameService.getCurrentUser().then(function(){
+            console.log('vm.currentUser is: ', GameService.currentUser);
+        });
+      } else {
+        swal("Whoah there!", "Wrong password?  Have you registered yet?", "error");
+      }
+    });
+  };
+
   vm.logOut = function() {
-      vm.name = '';
-      vm.go('/');
+    vm.name = '';
+    vm.go('/');
   };
 
   // END LOG IN CODE
@@ -234,6 +239,6 @@ function GameController(GameService, $location) {
 
 app.filter('secondsToDateTime', function() {
   return function(seconds) {
-      return new Date(1970, 0, 1).setSeconds(seconds);
+    return new Date(1970, 0, 1).setSeconds(seconds);
   };
 }); // time filter used in game end screen

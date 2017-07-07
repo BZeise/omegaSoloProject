@@ -1,8 +1,8 @@
 var express = require( 'express' );
 var router = express.Router();
+var bcrypt = require( 'bcrypt' );
 var bodyParser = require( 'body-parser' );
 var user = require( '../user' );
-var bcrypt = require( 'bcrypt' );
 
 router.use( bodyParser.urlencoded( { extended: true } ) );
 router.use( bodyParser.json() );

@@ -4,7 +4,11 @@ mongoose.connect( 'localhost:27017/LightningRound' );
 
 var userSchema = new mongoose.Schema({
   username: String,
-  password: String
+  password: String,
+  totalQuizzes: { type: Number, default: 0},
+  wonQuizzes: { type: Number, default: 0},
+  totalAnswers: { type: Number, default: 0},
+  correctAnswers: { type: Number, default: 0}
 });
 
 var userModel = mongoose.model( 'userModel', userSchema);

@@ -2,13 +2,13 @@ var express = require( 'express' );
 var app = express();
 var index = require( './modules/routes/index' );
 var register = require('./modules/routes/register' );
-// var items = require('./modules/routes/items' );
+var users = require('./modules/routes/users' );
 // add extra routes when needed
 
 app.use(express.static('public'));
-app.use( '/', index);
-app.use( '/register', register);
-// app.use( '/items', items);
+app.use( '/', index );
+app.use( '/register', register );
+app.use( '/users', users );
 
 var port = process.env.PORT || 7878;
 
