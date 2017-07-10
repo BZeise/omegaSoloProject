@@ -229,7 +229,7 @@ function QuizController(QuizService, $location) {
   };
 
   vm.logOut = function() {
-    vm.name = '';
+    vm.currentUser = '';
     vm.go('/');
   };
 

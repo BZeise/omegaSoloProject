@@ -20,6 +20,7 @@ router.use(bodyParser.json());
 //
 // var userModel = mongoose.model( 'userModel', userSchema);
 
+// post call to get currentUser
 router.post('/', function(req, res) {
     // console.log('in users.js, post to /, req.body is:', req);
     // console.log('in users.js, post to /, user.userModel is:', user.userSchema);

@@ -32,9 +32,7 @@
     });
   };
   sv.getCurrentUser = function( credentials ) {
-    console.log('in sv.getCurrentUser, wooooo');
     return $http.post('/users',  credentials ).then(function( response ){
-      console.log('back from /users post with response: ', response);
       sv.currentUser = response;
       return response;
     });
