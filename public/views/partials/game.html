@@ -1,5 +1,5 @@
 <div>
-  User:  {{gc.inputed.username}} <br>
+  User:  {{gc.currentUser ? gc.currentUser.username : gc.inputed.username}} <br>
   Question #{{gc.currentQuestion + 1}} / {{gc.numQuestions}} <br>
   Category:  {{gc.qTS.category}}
   <p>{{gc.qTS.question}}</p>
