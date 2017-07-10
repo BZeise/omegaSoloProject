@@ -48,6 +48,14 @@ function QuizController(QuizService, $location) {
   vm.lastAnswerWasCorrect = '';
   vm.firstQuestion = true;
 
+  // user stat update object
+  var userStats = {
+    correctAnswers : 0,
+    totalAnswers : 0,
+    wonQuizzes : 0 ,
+    totalQuizzes : 0
+  };
+
   // beginQuiz function gets questions based on selected options
   // then, launches quiz
   vm.beginQuiz = function() {
@@ -99,29 +107,29 @@ function QuizController(QuizService, $location) {
     // check if quiz is over (no more questions left in array)
     if (vm.currentQuestion == vm.questionsArray.length) {
       console.log("End of quiz!");
-      vm.qTS = {};
-      // use vm.go to go to another view probably
-      // and that would stop using this next line, which is totally janky
+      vm.qTS = {}; // clear qTS
       vm.go('/quizEnd');
-      // vm.qTS.question = "Score: " + vm.score + " / " + vm.questionsArray.length;
       vm.quizInProgress = false;
       vm.lastAnswerWasCorrect = '';
-
       // timer
       vm.endTime = new Date();
+      vm.totalTime = vm.endTime - vm.startTime;
+
+      if (vm.currentUser) {
+        userStats.totalQuizzes++;
+        console.log('userStats is: ', userStats);
+      } // increment user stats and send update
     } // end END QUIZ SCENARIO
     else {
       // take the next question from the provided array
       // vm.qts is vm.questionToShow
       vm.qTS = vm.questionsArray[vm.currentQuestion];
-      // console.log('this one:', vm.qTS);
-
 
       // declare possibleAnswers, which will be all answers correct or not
       vm.qTS.possibleAnswers = vm.qTS.incorrect_answers;
       // console.log('this one:', vm.qTS.possibleAnswers);
       vm.qTS.possibleAnswers.push(vm.qTS.correct_answer);
-      // console.log('this one:', vm.qTS.possibleAnswers);
+      // console.log('or this one:', vm.qTS.possibleAnswers);
       // something weird here!  What's the difference between those two logs?!
 
       // shuffles the order to hide the correct_answer
@@ -139,7 +147,10 @@ function QuizController(QuizService, $location) {
     vm.rightAnswer = vm.qTS.correct_answer;
     // increment current quiz stats
     vm.score++;
-    // increment user stats
+    if (vm.currentUser) {
+      userStats.correctAnswers++;
+      userStats.totalAnswers++;
+    } // increment user stats
   };
 
   vm.incorrect = function(wrongAnswer) {
@@ -149,8 +160,10 @@ function QuizController(QuizService, $location) {
     vm.wrongAnswer = wrongAnswer;
     vm.rightAnswer = vm.qTS.correct_answer;
     console.log('right:', vm.rightAnswer, ', and wrong:', vm.wrongAnswer);
-    // increment current quiz stats (just totals)
-    // increment user stats (just totals)
+
+    if (vm.currentUser) {
+      userStats.totalAnswers++;
+    } // increment user stats
   };
 
 
@@ -202,39 +215,35 @@ function QuizController(QuizService, $location) {
   };
 
   vm.loginUser = function() {
-    console.log('vm.loginUser clicked!');
+    // console.log('vm.loginUser clicked!');
     var credentials = {
       username: vm.inputed.username,
       password: vm.inputed.password
-    };
+    };  // assemble login details and pass to postLogin
     QuizService.postLogin(credentials).then(function(response) {
+      // if log-in successful
       if (response.data == 'we got it') {
-        vm.go('/start');
-        vm.name = credentials.username;
-        // console.log('in vm.loginUser', vm.name, credentials.username);
-        // console.log('credentials is: ', credentials);
-        // console.log('response is:', response);
-
+        // clear inputs
         vm.inputed.username = '';
         vm.inputed.password = '';
-
+        // load currentUser object
         QuizService.getCurrentUser(credentials).then(function(){
             console.log('vm.currentUser is: ', QuizService.currentUser.data);
             vm.currentUser = QuizService.currentUser.data;
         });
+        // start the quiz
+        vm.go('/start');
       } else {
         swal("Whoah there!", "Wrong password?  Have you registered yet?", "error");
-      }
+      } // end bad log in
     });
   };
 
   vm.logOut = function() {
+    // clear currentUser object
     vm.currentUser = '';
     vm.go('/');
   };
-
-  // END LOG IN CODE
-
 
 }
 
