@@ -4,7 +4,6 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var user = require('../user');
 
-
 router.use(bodyParser.urlencoded( {extended: true} ) );
 router.use(bodyParser.json());
 
@@ -21,11 +20,13 @@ router.use(bodyParser.json());
 //
 // var userModel = mongoose.model( 'userModel', userSchema);
 
-router.get('/', function(req, res) {
-    // console.log('in users.js, get to /, req.body is:', req);
-    // console.log('in users.js, get to /, user.userModel is:', user.userSchema);
-    user.find().then(function(response) {
-      console.log('response is', response);
+router.post('/', function(req, res) {
+    // console.log('in users.js, post to /, req.body is:', req);
+    // console.log('in users.js, post to /, user.userModel is:', user.userSchema);
+    // console.log('this one:',req.body.username);
+    user.findOne({
+        username: req.body.username
+    }).then(function(response) {
         res.send(response);
     });
 });

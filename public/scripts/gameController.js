@@ -218,7 +218,7 @@ function GameController(GameService, $location) {
         vm.inputed.username = '';
         vm.inputed.password = '';
         // vm.currentUser = GameService.getCurrentUser();
-        GameService.getCurrentUser().then(function(){
+        GameService.getCurrentUser(credentials).then(function(){
             console.log('vm.currentUser is: ', GameService.currentUser);
         });
       } else {

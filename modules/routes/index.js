@@ -37,6 +37,6 @@ router.post('/', function(req, res) {
             }
         }
     });
-}); // ---- USE THIS TO LOG IN?
+}); // ---- USE THIS TO LOG IN
 
 module.exports = router;

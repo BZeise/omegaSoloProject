@@ -27,16 +27,15 @@ app.service( 'GameService', function( $http ) {
   };
   sv.postLogin = function( credentials ) {
     return $http.post('/', credentials).then(function( response ){
-      console.log('back from / post with response: ', response);
+      // console.log('back from / post with response: ', response);
       return response;
     });
   };
-  sv.getCurrentUser = function() {
+  sv.getCurrentUser = function( credentials ) {
     console.log('in sv.getCurrentUser, wooooo');
-    return $http.get('/users').then(function( response ){
-      console.log('back from /users get with response: ', response);
+    return $http.post('/users',  credentials ).then(function( response ){
+      console.log('back from /users post with response: ', response);
       sv.currentUser = response;
-      console.log('this one:, user is:', sv.currentUser);
       return response;
     });
   };
