@@ -32,8 +32,13 @@
     });
   };
   sv.getCurrentUser = function( credentials ) {
-    return $http.post('/users',  credentials ).then(function( response ){
+    return $http.post('/users', credentials ).then(function( response ){
       sv.currentUser = response;
+      return response;
+    });
+  };
+  sv.sendStats = function(statObj) {
+    return $http.put('/stats', statObj).then(function( response ){
       return response;
     });
   };

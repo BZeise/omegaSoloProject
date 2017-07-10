@@ -48,13 +48,7 @@ function QuizController(QuizService, $location) {
   vm.lastAnswerWasCorrect = '';
   vm.firstQuestion = true;
 
-  // user stat update object
-  var userStats = {
-    correctAnswers : 0,
-    totalAnswers : 0,
-    wonQuizzes : 0 ,
-    totalQuizzes : 0
-  };
+
 
   // beginQuiz function gets questions based on selected options
   // then, launches quiz
@@ -116,8 +110,9 @@ function QuizController(QuizService, $location) {
       vm.totalTime = vm.endTime - vm.startTime;
 
       if (vm.currentUser) {
-        userStats.totalQuizzes++;
-        console.log('userStats is: ', userStats);
+        vm.currentUser.userStats.totalQuizzes++;
+        console.log('vm.currentUser.userStats is: ', vm.currentUser.userStats);
+        QuizService.sendStats(vm.currentUser.userStats);
       } // increment user stats and send update
     } // end END QUIZ SCENARIO
     else {
@@ -148,8 +143,8 @@ function QuizController(QuizService, $location) {
     // increment current quiz stats
     vm.score++;
     if (vm.currentUser) {
-      userStats.correctAnswers++;
-      userStats.totalAnswers++;
+      vm.currentUser.userStats.correctAnswers++;
+      vm.currentUser.userStats.totalAnswers++;
     } // increment user stats
   };
 
@@ -162,7 +157,7 @@ function QuizController(QuizService, $location) {
     console.log('right:', vm.rightAnswer, ', and wrong:', vm.wrongAnswer);
 
     if (vm.currentUser) {
-      userStats.totalAnswers++;
+      vm.currentUser.userStats.totalAnswers++;
     } // increment user stats
   };
 
@@ -230,6 +225,14 @@ function QuizController(QuizService, $location) {
         QuizService.getCurrentUser(credentials).then(function(){
             console.log('vm.currentUser is: ', QuizService.currentUser.data);
             vm.currentUser = QuizService.currentUser.data;
+
+            // initialize user stat update object
+            vm.currentUser.userStats = {
+              correctAnswers : 0,
+              totalAnswers : 0,
+              wonQuizzes : 0 ,
+              totalQuizzes : 0
+            };
         });
         // start the quiz
         vm.go('/start');
