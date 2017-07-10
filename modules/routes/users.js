@@ -20,15 +20,14 @@ router.use(bodyParser.json());
 // });
 //
 // var userModel = mongoose.model( 'userModel', userSchema);
-//
+
 router.get('/', function(req, res) {
-    console.log('in users.js, get to /, req.body is:', req.body);
-    console.log('in users.js, get to /, user.userModel is:', user);
+    // console.log('in users.js, get to /, req.body is:', req);
+    // console.log('in users.js, get to /, user.userModel is:', user.userSchema);
     user.find().then(function(response) {
+      console.log('response is', response);
         res.send(response);
     });
 });
 
-// module.exports = userModel;
 module.exports = router;
-// module.exports = exportThese;

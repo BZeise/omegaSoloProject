@@ -148,7 +148,7 @@ function GameController(GameService, $location) {
     vm.firstQuestion = false;
     vm.wrongAnswer = wrongAnswer;
     vm.rightAnswer = vm.qTS.correct_answer;
-    console.log('right and wrong:', vm.rightAnswer, vm.wrongAnswer);
+    console.log('right:', vm.rightAnswer, ', and wrong:', vm.wrongAnswer);
     // increment current game stats (just totals)
     // increment user stats (just totals)
   };
