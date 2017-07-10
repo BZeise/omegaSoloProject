@@ -2,7 +2,7 @@
   <md-card>
     <md-card-title>
       <md-card-title-text>
-        <span class="md-headline">Game Options</span>
+        <span class="md-headline">Quiz Options</span>
         <span class="md-subhead">LEAVE BLANK for DEFAULT options</span>
       </md-card-title-text>
     </md-card-title>
@@ -14,7 +14,7 @@
         <md-input-container>
           <label># of Questions</label>
           <!-- this should be longer to get the whole label showing -->
-          <input ng-model="gc.numQuestions" type="number" step="5" min="5" max="50">
+          <input ng-model="qc.numQuestions" type="number" step="5" min="5" max="50">
         </md-input-container>
       </div>
 
@@ -22,9 +22,9 @@
       <div layout="row">
         <md-input-container>
           <label>Category</label>
-          <md-select ng-model="gc.category">
+          <md-select ng-model="qc.category">
             <md-option value=""><em>None</em></md-option>
-            <md-option ng-repeat="x in gc.categories" ng-value="x">
+            <md-option ng-repeat="x in qc.categories" ng-value="x">
               {{x.name}}
             </md-option>
           </md-select>
@@ -35,7 +35,7 @@
       <div layout="row">
         <md-input-container>
           <!-- <div layout="row" layout-align="space-between center"> -->
-          <md-select ng-model="gc.difficulty" placeholder="Difficulty">
+          <md-select ng-model="qc.difficulty" placeholder="Difficulty">
             <md-option value="easy">Easy</md-option>
             <md-option value="medium">Medium</md-option>
             <md-option value="hard">Hard</md-option>
@@ -46,7 +46,7 @@
       <!-- type selector -->
       <div layout="row">
         <md-input-container>
-          <md-select ng-model="gc.type" placeholder="Type">
+          <md-select ng-model="qc.type" placeholder="Type">
             <md-option value="multiple">Multiple Choice</md-option>
             <md-option value="boolean">True / False</md-option>
           </md-select>
@@ -56,7 +56,7 @@
     </md-card-content>
   </md-card>
 
-  <button ng-click="gc.go('/')">Quit Game</button>
-  <md-button class="md-raised md-primary" ng-hide="gc.gameInProgress"
-    ng-click="gc.beginGame(); gc.go('/game')">Begin</md-button>
+  <button ng-click="qc.go('/')">Quit Quiz</button>
+  <md-button class="md-raised md-primary" ng-hide="qc.quizInProgress"
+    ng-click="qc.beginQuiz(); qc.go('/quiz')">Begin</md-button>
 </div>

@@ -1,4 +1,4 @@
-// console.log( 'gameController.js loaded' );
+// console.log( 'quizController.js loaded' );
 
 // declare app
 var app = angular.module('myApp', ['ngRoute', 'ngMaterial']);
@@ -7,40 +7,40 @@ var app = angular.module('myApp', ['ngRoute', 'ngMaterial']);
 app.config(function($routeProvider) {
   $routeProvider.when('/', {
     templateUrl: "views/partials/landing.html",
-    controller: "GameController"
+    controller: "QuizController"
   }).when('/login', {
     templateUrl: "views/partials/login.html",
-    controller: "GameController"
+    controller: "QuizController"
   }).when('/register', {
     templateUrl: "views/partials/register.html",
-    controller: "GameController"
-  }).when('/game', {
-    templateUrl: "views/partials/game.html",
-    controller: "GameController"
-  }).when('/gameLeader', {
-    templateUrl: "views/partials/gameLeader.html",
-    controller: "GameController"
-  }).when('/gamePlayer', {
-    templateUrl: "views/partials/gamePlayer.html",
-    controller: "GameController"
-  }).when('/gameEnd', {
-    templateUrl: "views/partials/gameEnd.html",
-    controller: "GameController"
+    controller: "QuizController"
+  }).when('/quiz', {
+    templateUrl: "views/partials/quiz.html",
+    controller: "QuizController"
+  }).when('/quizLeader', {
+    templateUrl: "views/partials/quizLeader.html",
+    controller: "QuizController"
+  }).when('/quizPlayer', {
+    templateUrl: "views/partials/quizPlayer.html",
+    controller: "QuizController"
+  }).when('/quizEnd', {
+    templateUrl: "views/partials/quizEnd.html",
+    controller: "QuizController"
   });
 });
 
 // declare controller
-app.controller('GameController', GameController);
+app.controller('QuizController', QuizController);
 
-function GameController(GameService, $location) {
+function QuizController(QuizService, $location) {
   var vm = this;
 
-  // game operation variables
+  // quiz operation variables
   vm.currentQuestion = 0;
   vm.score = 0;
-  vm.gameInProgress = false;
+  vm.quizInProgress = false;
 
-  // game option variables
+  // quiz option variables
   vm.numQuestions = 10;
   vm.category = '';
   vm.difficulty = '';
@@ -48,10 +48,10 @@ function GameController(GameService, $location) {
   vm.lastAnswerWasCorrect = '';
   vm.firstQuestion = true;
 
-  // beginGame function gets questions based on selected options
-  // then, launches game
-  vm.beginGame = function() {
-    // console.log( 'in beginGame' );
+  // beginQuiz function gets questions based on selected options
+  // then, launches quiz
+  vm.beginQuiz = function() {
+    // console.log( 'in beginQuiz' );
 
     // construct API string from selected options
     apiString = 'https://opentdb.com/api.php?amount=';
@@ -66,20 +66,20 @@ function GameController(GameService, $location) {
       apiString += '&type=' + vm.type;
     } // end apiString construction
 
-    GameService.getQuestions(apiString).then(function(response) {
-      vm.questionsArray = GameService.theQuestions;
+    QuizService.getQuestions(apiString).then(function(response) {
+      vm.questionsArray = QuizService.theQuestions;
       console.log('vm.questionsArray is: ', vm.questionsArray);
 
       // preps the next question
       vm.currentQuestion = -1;
       vm.nextQuestion();
-      vm.gameInProgress = true;
+      vm.quizInProgress = true;
 
       // timer
       vm.startTime = new Date();
       // console.log('startTime is:', vm.startTime);
     });
-  }; // end beginGame
+  }; // end beginQuiz
 
   vm.answer = function(answer) {
     if (answer == vm.qTS.correct_answer) {
@@ -95,21 +95,21 @@ function GameController(GameService, $location) {
     // increment question counter
     vm.currentQuestion++;
 
-    // begin END GAME SCENARIO
-    // check if game is over (no more questions left in array)
+    // begin END QUIZ SCENARIO
+    // check if quiz is over (no more questions left in array)
     if (vm.currentQuestion == vm.questionsArray.length) {
-      console.log("End of game!");
+      console.log("End of quiz!");
       vm.qTS = {};
       // use vm.go to go to another view probably
       // and that would stop using this next line, which is totally janky
-      vm.go('/gameEnd');
+      vm.go('/quizEnd');
       // vm.qTS.question = "Score: " + vm.score + " / " + vm.questionsArray.length;
-      vm.gameInProgress = false;
+      vm.quizInProgress = false;
       vm.lastAnswerWasCorrect = '';
 
       // timer
       vm.endTime = new Date();
-    } // end END GAME SCENARIO
+    } // end END QUIZ SCENARIO
     else {
       // take the next question from the provided array
       // vm.qts is vm.questionToShow
@@ -137,7 +137,7 @@ function GameController(GameService, $location) {
     vm.lastAnswerWasCorrect = true;
     vm.firstQuestion = false;
     vm.rightAnswer = vm.qTS.correct_answer;
-    // increment current game stats
+    // increment current quiz stats
     vm.score++;
     // increment user stats
   };
@@ -149,32 +149,32 @@ function GameController(GameService, $location) {
     vm.wrongAnswer = wrongAnswer;
     vm.rightAnswer = vm.qTS.correct_answer;
     console.log('right:', vm.rightAnswer, ', and wrong:', vm.wrongAnswer);
-    // increment current game stats (just totals)
+    // increment current quiz stats (just totals)
     // increment user stats (just totals)
   };
 
 
   // general navigation function
-  // contains logic to start game as GAMELEADER if no current game is open
+  // contains logic to start quiz as QUIZLEADER if no current quiz is open
   vm.go = function(path) {
-    // if you're starting a game...
+    // if you're starting a quiz...
     if (path == '/start') {
-      // and if a game is NOT already in progress...
-      if (vm.gameInProgress == false) {
-        // then go to Game Leader Screen
-        $location.path('/gameLeader');
+      // and if a quiz is NOT already in progress...
+      if (vm.quizInProgress == false) {
+        // then go to Quiz Leader Screen
+        $location.path('/quizLeader');
       } else {
-        // else go to Game Player Screen
-        $location.path('/gamePlayer');
+        // else go to Quiz Player Screen
+        $location.path('/quizPlayer');
       }
-    } else { // if not starting a game, just go to path
+    } else { // if not starting a quiz, just go to path
       $location.path(path);
     }
   }; // end vm.go
 
   vm.getOptions = function() {
-    GameService.getCategories().then(function(response) {
-      vm.categories = GameService.theCategories;
+    QuizService.getCategories().then(function(response) {
+      vm.categories = QuizService.theCategories;
     });
   }; // end vm.getOptions
 
@@ -190,7 +190,7 @@ function GameController(GameService, $location) {
         username: vm.inputed.username,
         password: vm.inputed.password
       };
-      GameService.postRegister(credentials).then(function(response) {
+      QuizService.postRegister(credentials).then(function(response) {
         if (response.status == 201) {
           vm.go('/');
           vm.inputed.username = '';
@@ -207,7 +207,7 @@ function GameController(GameService, $location) {
       username: vm.inputed.username,
       password: vm.inputed.password
     };
-    GameService.postLogin(credentials).then(function(response) {
+    QuizService.postLogin(credentials).then(function(response) {
       if (response.data == 'we got it') {
         vm.go('/start');
         vm.name = credentials.username;
@@ -218,9 +218,9 @@ function GameController(GameService, $location) {
         vm.inputed.username = '';
         vm.inputed.password = '';
 
-        GameService.getCurrentUser(credentials).then(function(){
-            console.log('vm.currentUser is: ', GameService.currentUser.data);
-            vm.currentUser = GameService.currentUser.data;
+        QuizService.getCurrentUser(credentials).then(function(){
+            console.log('vm.currentUser is: ', QuizService.currentUser.data);
+            vm.currentUser = QuizService.currentUser.data;
         });
       } else {
         swal("Whoah there!", "Wrong password?  Have you registered yet?", "error");
@@ -242,4 +242,4 @@ app.filter('secondsToDateTime', function() {
   return function(seconds) {
     return new Date(1970, 0, 1).setSeconds(seconds);
   };
-}); // time filter used in game end screen
+}); // time filter used in quiz end screen

@@ -1,6 +1,6 @@
-// console.log( 'game.service.js loaded!' );
+  // console.log( 'quiz.service.js loaded!' );
 
-app.service( 'GameService', function( $http ) {
+  app.service( 'QuizService', function( $http ) {
   var sv = this;
 
   // function to use API call to get list of trivia questions

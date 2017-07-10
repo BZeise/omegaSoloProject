@@ -1,0 +1,18 @@
+<div>
+  Final score:  {{qc.score}} / {{qc.numQuestions}}
+  <!-- started at: {{qc.startTime}}, -->
+  <!-- ended at:  {{qc.endTime}}, -->
+  Total time:  {{(qc.endTime - qc.startTime) / 1000 | number:1}}s
+  <!-- Total time:  {{(qc.endTime - qc.startTime) | secondsToDateTime | date:'m:ss'}}, <br> -->
+  <!-- Total time:  {{(qc.endTime - qc.startTime) | date:'m:ss'}}, <br> -->
+  <!-- Total time:  {{(qc.endTime - qc.startTime) | duration:'mm:ss'}} -->
+  <p ng-show="qc.lastAnswerWasCorrect">
+    {{qc.rightAnswer}} was correct!
+  </p>
+  <p ng-hide="qc.lastAnswerWasCorrect">
+    <span class="youGuessedWrong">Your Guess: {{qc.wrongAnswer}}</span>
+    <span class="youGuessedRight">Correct Answer:  {{qc.rightAnswer}}</span>
+  </p>
+  <button ng-click="qc.go('/')">Exit</button>
+  <button ng-click="qc.go('/start')">Play Again!</button>
+</div>

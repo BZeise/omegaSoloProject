@@ -1,0 +1,24 @@
+<div>
+  User:  {{qc.currentUser ? qc.currentUser.username : qc.inputed.username}} <br>
+  Question #{{qc.currentQuestion + 1}} / {{qc.numQuestions}} <br>
+  Category:  {{qc.qTS.category}}
+  <p>{{qc.qTS.question}}</p>
+  <ul>
+    <li ng-repeat="x in qc.qTS.possibleAnswers">
+      <button class="answerButton" ng-click="qc.answer(x)">
+        {{x}}
+      </button>
+    </li>
+  </ul>
+  <div ng-hide="qc.firstQuestion">
+    <p ng-show="qc.lastAnswerWasCorrect">
+      {{qc.rightAnswer}} was correct!
+    </p>
+    <p ng-hide="qc.lastAnswerWasCorrect">
+      <span class="youGuessedWrong">Your Guess: {{qc.wrongAnswer}}</span>
+      <span class="youGuessedRight">Correct Answer:  {{qc.rightAnswer}}</span>
+    </p>
+  </div>
+  Current score:  {{qc.score}} / {{qc.numQuestions}}
+  <button ng-click="qc.go('/')">Quit Quiz</button>
+</div>

@@ -1,11 +1,11 @@
 <div>
   <form name="register">
-    <input type="text" placeholder="User Name?" ng-model="gc.inputed.username" required>
-    <input type="password" placeholder="Password?" ng-model="gc.inputed.password" required>
-    <input type="password" placeholder="Confirm password?" ng-model="gc.inputed.password2" required>
-    <button ng-click="gc.registerUser()" ng-disabled="register.$invalid">Register!</button>
+    <input type="text" placeholder="User Name?" ng-model="qc.inputed.username" required>
+    <input type="password" placeholder="Password?" ng-model="qc.inputed.password" required>
+    <input type="password" placeholder="Confirm password?" ng-model="qc.inputed.password2" required>
+    <button ng-click="qc.registerUser()" ng-disabled="register.$invalid">Register!</button>
     <!-- add in function to test login -->
     <!-- <div class="userDiv">Userpage</div> -->
-    <button ng-click="gc.go('/')">Cancel</button>
+    <button ng-click="qc.go('/')">Cancel</button>
   </form>
 </div>
