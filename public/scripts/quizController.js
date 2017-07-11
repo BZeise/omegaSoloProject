@@ -54,6 +54,15 @@ function QuizController(QuizService, $location) {
   // then, launches quiz
   vm.beginQuiz = function() {
     // console.log( 'in beginQuiz' );
+    vm.score = 0; // reset score
+    if (vm.currentUser) {  // if logged in, re/initialize
+      vm.currentUser.userStats = {
+        correctAnswers : 0,
+        totalAnswers : 0,
+        wonQuizzes : 0 ,
+        totalQuizzes : 0
+      };
+    }
 
     // construct API string from selected options
     apiString = 'https://opentdb.com/api.php?amount=';
@@ -112,7 +121,7 @@ function QuizController(QuizService, $location) {
       if (vm.currentUser) {
         vm.currentUser.userStats.totalQuizzes++;
         console.log('vm.currentUser.userStats is: ', vm.currentUser.userStats);
-        QuizService.sendStats(vm.currentUser.userStats);
+        QuizService.sendStats(vm.currentUser);
       } // increment user stats and send update
     } // end END QUIZ SCENARIO
     else {
@@ -225,14 +234,6 @@ function QuizController(QuizService, $location) {
         QuizService.getCurrentUser(credentials).then(function(){
             console.log('vm.currentUser is: ', QuizService.currentUser.data);
             vm.currentUser = QuizService.currentUser.data;
-
-            // initialize user stat update object
-            vm.currentUser.userStats = {
-              correctAnswers : 0,
-              totalAnswers : 0,
-              wonQuizzes : 0 ,
-              totalQuizzes : 0
-            };
         });
         // start the quiz
         vm.go('/start');
