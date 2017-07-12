@@ -7,15 +7,18 @@ var mongoose = require('mongoose');
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-var questionsToShare = '';
+var quizInProgress = false;
 
 router.get('/', function(req, res) {
-    res.send(questionsToShare);
+    console.log('hit in quiz.js GET, setting quizInProgress to true');
+    res.send(quizInProgress);
+    quizInProgress = true;
 });
 
 router.post('/', function(req, res) {
-    questionsToShare = req.body;
-    res.send(questionsToShare);
+    console.log('hit in quiz.js POST, setting quizInProgress to false');
+    res.sendStatus(200);
+    quizInProgress = false;
 });
 
 module.exports = router;

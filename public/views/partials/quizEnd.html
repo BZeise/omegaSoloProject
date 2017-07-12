@@ -1,11 +1,6 @@
 <div>
   Final score:  {{qc.score}} / {{qc.numQuestions}}
-  <!-- started at: {{qc.startTime}}, -->
-  <!-- ended at:  {{qc.endTime}}, -->
   Total time:  {{(qc.totalTime) / 1000 | number:1}}s
-  <!-- Total time:  {{(qc.endTime - qc.startTime) | secondsToDateTime | date:'m:ss'}}, <br> -->
-  <!-- Total time:  {{(qc.endTime - qc.startTime) | date:'m:ss'}}, <br> -->
-  <!-- Total time:  {{(qc.endTime - qc.startTime) | duration:'mm:ss'}} -->
   <p ng-show="qc.lastAnswerWasCorrect">
     {{qc.rightAnswer}} was correct!
   </p>
@@ -13,6 +8,24 @@
     <span class="youGuessedWrong">Your Guess: {{qc.wrongAnswer}}</span>
     <span class="youGuessedRight">Correct Answer:  {{qc.rightAnswer}}</span>
   </p>
+  <!-- Quiz still going, waiting for end -->
+  <div ng-show="gc.quizInProgress">
+    Quiz is still going?
+  </div>
+  <!-- Quiz over, winner / finisher display -->
+  <div ng-hide="gc.quizInProgress">
+    <div ng-show="qc.winner">
+      You won!
+    </div>
+    Placement:
+    <ol>
+      <li>Me</li>
+      <li>You</li>
+      <li>Them</li>
+      <li>Us</li>
+    </ol>
+  </div>
+
   <button ng-click="qc.go('/')">Exit</button>
   <button ng-click="qc.go('/start')">Play Again!</button>
 </div>

@@ -7,7 +7,6 @@
   // selected options are passed through the 'url' argument constructed in controller
   sv.getQuestions = function ( url ) {
     return $http.get ( url ).then( function( response ){
-      // console.log('in sv.getQuestions, response is:', response);
       sv.theQuestions = response.data.results;
     });
   }; // end getQuestions
@@ -25,23 +24,54 @@
       return response;
     });
   };
+
   sv.postLogin = function( credentials ) {
     return $http.post('/', credentials).then(function( response ){
-      // console.log('back from / post with response: ', response);
       return response;
     });
   };
+
   sv.getCurrentUser = function( credentials ) {
     return $http.post('/users', credentials ).then(function( response ){
       sv.currentUser = response;
       return response;
     });
   };
-  sv.sendStats = function(statObj) {
+
+  sv.sendStats = function( statObj ) {
     return $http.put('/stats', statObj).then(function( response ){
       return response;
     });
   };
 
+
+  // MULTIPLAYER STUFF
+  sv.getQuizInProgress = function() {
+    return $http.get('/quiz').then( function( response ){
+      return response;
+    });
+  }; // end getQuizInProgress
+
+  sv.endQuizInProgress = function() {
+    return $http.post('/quiz').then( function( response ){
+      return response;
+    });
+  }; // end getQuizInProgress
+
+  sv.shareTheQuestions = function( questions ) {
+    return $http.post('/questions', questions ).then(function( response ){
+      sv.questionsToShare = response;
+      // console.log('in quiz.service, sv.questionsToShare is:', sv.questionsToShare);
+      return response;
+    });
+  }; // end shareTheQuestions
+
+  sv.getSharedQuestions = function() {
+    return $http.get('/questions').then(function( response ){
+      sv.questionsToShare = response;
+      // console.log('in quiz.service, GET to /q, sv.questionsToShare is:', sv.questionsToShare);
+      return response;
+    });
+  }; // end getSharedQuestions
 
 });

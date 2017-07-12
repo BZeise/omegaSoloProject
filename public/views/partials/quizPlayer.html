@@ -1,6 +1,9 @@
 <div>
-  Logged in as:  {{qc.currentUser ? qc.currentUser.username : qc.inputed.username}} <br>
-  Quiz will start when leader hits BEGIN!
-  x / y players connected!
+  Logged in as:  {{qc.currentUser ? qc.currentUser.username : qc.inputed.username}}
+  <p>
+    Once leader has begun, this button will launch the quiz!
+    <button ng-click="qc.playerStartIfReady()">LET'S DO THIS QUIZ</button>
+    {{qc.patienceText}}
+  </p>
   <button ng-click="qc.go('/')">Cancel</button>
 </div>

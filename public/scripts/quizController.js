@@ -38,7 +38,7 @@ function QuizController(QuizService, $location) {
   // quiz operation variables
   vm.currentQuestion = 0;
   vm.score = 0;
-  vm.quizInProgress = false;
+  // vm.quizInProgress = false; // replaced at server level, still initialize?
 
   // quiz option variables
   vm.numQuestions = 10;
@@ -48,19 +48,17 @@ function QuizController(QuizService, $location) {
   vm.lastAnswerWasCorrect = '';
   vm.firstQuestion = true;
 
-
-
   // beginQuiz function gets questions based on selected options
   // then, launches quiz
   vm.beginQuiz = function() {
     // console.log( 'in beginQuiz' );
     vm.score = 0; // reset score
-    if (vm.currentUser) {  // if logged in, re/initialize
+    if (vm.currentUser) { // if logged in, re/initialize
       vm.currentUser.userStats = {
-        correctAnswers : 0,
-        totalAnswers : 0,
-        wonQuizzes : 0,
-        totalQuizzes : 0
+        correctAnswers: 0,
+        totalAnswers: 0,
+        wonQuizzes: 0,
+        totalQuizzes: 0
       };
     }
 
@@ -79,12 +77,12 @@ function QuizController(QuizService, $location) {
 
     QuizService.getQuestions(apiString).then(function(response) {
       vm.questionsArray = QuizService.theQuestions;
-      console.log('vm.questionsArray is: ', vm.questionsArray);
+      QuizService.shareTheQuestions(vm.questionsArray);
 
       // preps the next question
       vm.currentQuestion = -1;
       vm.nextQuestion();
-      vm.quizInProgress = true;
+      // vm.quizInProgress = true; // quizInProgress now set to true in initial GET call to server
 
       // timer
       vm.startTime = new Date();
@@ -111,8 +109,7 @@ function QuizController(QuizService, $location) {
     if (vm.currentQuestion == vm.questionsArray.length) {
       console.log("End of quiz!");
       vm.qTS = {}; // clear qTS
-      vm.go('/quizEnd');
-      vm.quizInProgress = false;
+      QuizService.endQuizInProgress();
       vm.lastAnswerWasCorrect = '';
       // timer
       vm.endTime = new Date();
@@ -120,22 +117,21 @@ function QuizController(QuizService, $location) {
 
       if (vm.currentUser) {
         vm.currentUser.userStats.totalQuizzes++;
-        console.log('vm.currentUser.userStats is: ', vm.currentUser.userStats);
+        // console.log('vm.currentUser.userStats is: ', vm.currentUser.userStats);
         QuizService.sendStats(vm.currentUser);
       } // increment user stats and send update
+
+      vm.go('/quizEnd'); // go to quizEnd screen
     } // end END QUIZ SCENARIO
     else {
       // take the next question from the provided array
       // vm.qts is vm.questionToShow
       vm.qTS = vm.questionsArray[vm.currentQuestion];
-      console.log('qts is:', vm.qTS);
-
 
       // declare possibleAnswers, which will be all answers correct or not
       vm.qTS.possibleAnswers = vm.qTS.incorrect_answers;
-      // console.log('this one:', vm.qTS.possibleAnswers);
+      // add in the correct_answer to list of possibleAnswers
       vm.qTS.possibleAnswers.push(vm.qTS.correct_answer);
-      // console.log('or this one:', vm.qTS.possibleAnswers);
       // something weird here!  What's the difference between those two logs?!
 
       // decode all text to remove HTML entities
@@ -144,7 +140,6 @@ function QuizController(QuizService, $location) {
       for (var i = 0; i < vm.qTS.possibleAnswers.length; i++) {
         vm.qTS.possibleAnswers[i] = decodeEntities(vm.qTS.possibleAnswers[i]);
       }
-      console.log('after decode loop, qts is:', vm.qTS);
 
       // shuffles the order to hide the correct_answer
       vm.qTS.possibleAnswers.sort(function() {
@@ -186,14 +181,18 @@ function QuizController(QuizService, $location) {
   vm.go = function(path) {
     // if you're starting a quiz...
     if (path == '/start') {
-      // and if a quiz is NOT already in progress...
-      if (vm.quizInProgress == false) {
-        // then go to Quiz Leader Screen
-        $location.path('/quizLeader');
-      } else {
-        // else go to Quiz Player Screen
-        $location.path('/quizPlayer');
-      }
+      QuizService.getQuizInProgress().then(function(response) {
+        // ask server if quizInProgress
+        vm.quizInProgress = response.data;
+        // and if a quiz is NOT already in progress...
+        if (vm.quizInProgress == false) {
+          // then go to Quiz Leader Screen to set game options
+          $location.path('/quizLeader');
+        } else {
+          // else go to Quiz Player Screen
+          $location.path('/quizPlayer');
+        }
+      });
     } else { // if not starting a quiz, just go to path
       $location.path(path);
     }
@@ -205,11 +204,47 @@ function QuizController(QuizService, $location) {
     });
   }; // end vm.getOptions
 
+  vm.endQuiz = function() {
+    QuizService.endQuizInProgress();
+  };
+
+  vm.playerStartIfReady = function() {
+    QuizService.getSharedQuestions().then(function(response){
+      console.log('questionsToShare is:', QuizService.questionsToShare);
+      if (QuizService.questionsToShare.data) {
+        console.log('questions are ready to share!', QuizService.questionsToShare.data);
+        vm.questionsArray = QuizService.questionsToShare.data;
+        vm.score = 0; // reset score
+        if (vm.currentUser) { // if logged in, re/initialize
+          vm.currentUser.userStats = {
+            correctAnswers: 0,
+            totalAnswers: 0,
+            wonQuizzes: 0,
+            totalQuizzes: 0
+          };
+        }
+        // preps the next question
+        vm.currentQuestion = -1;
+        vm.nextQuestion();
+        
+        // timer
+        vm.startTime = new Date();
+        vm.go('/quiz');
+      } else {
+        console.log('questions are NOT ready to share!!!!!!!!!!!!!!');
+      }
+    });
+
+    // if questions are available, start game
+    // start a timer too
+
+  };
+
 
   // LOG IN CODE
 
   vm.registerUser = function() {
-    console.log('vm.registerUser clicked!');
+    // console.log('vm.registerUser clicked!');
     if (vm.inputed.password !== vm.inputed.password2) {
       swal("Whoops!", "Passwords don't match!", "error");
     } else {
@@ -233,7 +268,7 @@ function QuizController(QuizService, $location) {
     var credentials = {
       username: vm.inputed.username,
       password: vm.inputed.password
-    };  // assemble login details and pass to postLogin
+    }; // assemble login details and pass to postLogin
     QuizService.postLogin(credentials).then(function(response) {
       // if log-in successful
       if (response.data == 'we got it') {
@@ -241,9 +276,9 @@ function QuizController(QuizService, $location) {
         vm.inputed.username = '';
         vm.inputed.password = '';
         // load currentUser object
-        QuizService.getCurrentUser(credentials).then(function(){
-            console.log('vm.currentUser is: ', QuizService.currentUser.data);
-            vm.currentUser = QuizService.currentUser.data;
+        QuizService.getCurrentUser(credentials).then(function() {
+          // console.log('vm.currentUser is: ', QuizService.currentUser.data);
+          vm.currentUser = QuizService.currentUser.data;
         });
         // start the quiz
         vm.go('/start');
@@ -259,12 +294,14 @@ function QuizController(QuizService, $location) {
     vm.go('/');
   };
 
+  // END LOG IN CODE
+
   var decodeEntities = (function() {
     // this prevents any overhead from creating the object each time
     var element = document.createElement('div');
 
-    function decodeHTMLEntities (str) {
-      if(str && typeof str === 'string') {
+    function decodeHTMLEntities(str) {
+      if (str && typeof str === 'string') {
         // strip script/html tags
         str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
         str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
@@ -272,14 +309,12 @@ function QuizController(QuizService, $location) {
         str = element.textContent;
         element.textContent = '';
       }
-
       return str;
     }
-
     return decodeHTMLEntities;
-  })();
+  })(); // end decodeEntities
 
-}
+} // end QuizController
 
 app.filter('secondsToDateTime', function() {
   return function(seconds) {

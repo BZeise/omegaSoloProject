@@ -57,7 +57,7 @@
     </md-card-content>
   </md-card>
 
-  <button ng-click="qc.go('/')">Quit Quiz</button>
-  <md-button class="md-raised md-primary" ng-hide="qc.quizInProgress"
+  <button ng-click="qc.endQuiz(); qc.go('/')">Quit Quiz</button>
+  <md-button class="md-raised md-primary"
     ng-click="qc.beginQuiz(); qc.go('/quiz')">Begin</md-button>
 </div>

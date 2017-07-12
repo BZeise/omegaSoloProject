@@ -20,5 +20,6 @@
     </p>
   </div>
   Current score:  {{qc.score}} / {{qc.numQuestions}}
-  <button ng-click="qc.go('/')">Quit Quiz</button>
+  <button ng-click="qc.endQuiz(); qc.go('/')">END QUIZ AND LEAVE</button>
+  <button ng-click="qc.go('/')">JUST LEAVE</button>
 </div>
