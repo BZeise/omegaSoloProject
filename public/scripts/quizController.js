@@ -59,7 +59,7 @@ function QuizController(QuizService, $location) {
       vm.currentUser.userStats = {
         correctAnswers : 0,
         totalAnswers : 0,
-        wonQuizzes : 0 ,
+        wonQuizzes : 0,
         totalQuizzes : 0
       };
     }
@@ -128,6 +128,8 @@ function QuizController(QuizService, $location) {
       // take the next question from the provided array
       // vm.qts is vm.questionToShow
       vm.qTS = vm.questionsArray[vm.currentQuestion];
+      console.log('qts is:', vm.qTS);
+
 
       // declare possibleAnswers, which will be all answers correct or not
       vm.qTS.possibleAnswers = vm.qTS.incorrect_answers;
@@ -135,6 +137,14 @@ function QuizController(QuizService, $location) {
       vm.qTS.possibleAnswers.push(vm.qTS.correct_answer);
       // console.log('or this one:', vm.qTS.possibleAnswers);
       // something weird here!  What's the difference between those two logs?!
+
+      // decode all text to remove HTML entities
+      vm.qTS.question = decodeEntities(vm.qTS.question);
+      vm.qTS.correct_answer = decodeEntities(vm.qTS.correct_answer);
+      for (var i = 0; i < vm.qTS.possibleAnswers.length; i++) {
+        vm.qTS.possibleAnswers[i] = decodeEntities(vm.qTS.possibleAnswers[i]);
+      }
+      console.log('after decode loop, qts is:', vm.qTS);
 
       // shuffles the order to hide the correct_answer
       vm.qTS.possibleAnswers.sort(function() {
@@ -248,6 +258,26 @@ function QuizController(QuizService, $location) {
     vm.currentUser = '';
     vm.go('/');
   };
+
+  var decodeEntities = (function() {
+    // this prevents any overhead from creating the object each time
+    var element = document.createElement('div');
+
+    function decodeHTMLEntities (str) {
+      if(str && typeof str === 'string') {
+        // strip script/html tags
+        str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+        str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+        element.innerHTML = str;
+        str = element.textContent;
+        element.textContent = '';
+      }
+
+      return str;
+    }
+
+    return decodeHTMLEntities;
+  })();
 
 }
 
