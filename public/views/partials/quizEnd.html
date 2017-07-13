@@ -8,23 +8,16 @@
     <span class="youGuessedWrong">Your Guess: {{qc.wrongAnswer}}</span>
     <span class="youGuessedRight">Correct Answer:  {{qc.rightAnswer}}</span>
   </p>
-  <!-- Quiz still going, waiting for end -->
-  <div ng-show="gc.quizInProgress">
-    Quiz is still going?
-  </div>
-  <!-- Quiz over, winner / finisher display -->
-  <div ng-hide="gc.quizInProgress">
-    <div ng-show="qc.winner">
-      You won!
-    </div>
+  <!-- <div ng-show="qc.winner">
+    You won!
+  </div> -->
+  <button ng-click="qc.showLeaderboard()">Get Leaderboard</button>
+  <p>
     Placement:
     <ol>
-      <li>Me</li>
-      <li>You</li>
-      <li>Them</li>
-      <li>Us</li>
+      <li ng-repeat="x in qc.leaderboard | orderBy:['-score','time']">Score of: {{x.score}}, in {{(x.time) / 1000 | number:1}}s --- {{x.username}}</li>
     </ol>
-  </div>
+  </p>
 
   <button ng-click="qc.go('/')">Exit</button>
   <button ng-click="qc.go('/start')">Play Again!</button>

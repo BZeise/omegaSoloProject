@@ -38,7 +38,6 @@ function QuizController(QuizService, $location) {
   // quiz operation variables
   vm.currentQuestion = 0;
   vm.score = 0;
-  // vm.quizInProgress = false; // replaced at server level, still initialize?
 
   // quiz option variables
   vm.numQuestions = 10;
@@ -53,6 +52,8 @@ function QuizController(QuizService, $location) {
   vm.beginQuiz = function() {
     // console.log( 'in beginQuiz' );
     vm.score = 0; // reset score
+    vm.firstQuestion = true;
+
     if (vm.currentUser) { // if logged in, re/initialize
       vm.currentUser.userStats = {
         correctAnswers: 0,
@@ -61,6 +62,7 @@ function QuizController(QuizService, $location) {
         totalQuizzes: 0
       };
     }
+    QuizService.clearLeaderboard();
 
     // construct API string from selected options
     apiString = 'https://opentdb.com/api.php?amount=';
@@ -73,7 +75,7 @@ function QuizController(QuizService, $location) {
     }
     if (vm.type != '') {
       apiString += '&type=' + vm.type;
-    } // end apiString construction
+    } // end apiString construction, send to service to getQuestions
 
     QuizService.getQuestions(apiString).then(function(response) {
       vm.questionsArray = QuizService.theQuestions;
@@ -99,6 +101,7 @@ function QuizController(QuizService, $location) {
       vm.incorrect(answer);
       vm.nextQuestion();
     }
+    vm.firstQuestion = false;
   }; // end answer
 
   vm.nextQuestion = function() {
@@ -110,8 +113,9 @@ function QuizController(QuizService, $location) {
     if (vm.currentQuestion == vm.questionsArray.length) {
       console.log("End of quiz!");
       vm.qTS = {}; // clear qTS
+      vm.questionsArray = '';
       QuizService.endQuizInProgress();
-      vm.lastAnswerWasCorrect = '';
+      // vm.lastAnswerWasCorrect = '';
       // timer
       vm.endTime = new Date();
       vm.totalTime = vm.endTime - vm.startTime;
@@ -120,7 +124,27 @@ function QuizController(QuizService, $location) {
         vm.currentUser.userStats.totalQuizzes++;
         // console.log('vm.currentUser.userStats is: ', vm.currentUser.userStats);
         QuizService.sendStats(vm.currentUser);
+        console.log('vm.inputed.username is:', vm.inputed.username);
+        quizStatsForLeaderboard = {
+          username: vm.currentUser.username,
+          score: vm.score,
+          time: vm.totalTime
+        };
+        console.log(quizStatsForLeaderboard);
       } // increment user stats and send update
+      else {
+        console.log('vm.inputed.username is:', vm.inputed.username);
+        quizStatsForLeaderboard = {
+          username: vm.inputed.username,
+          score: vm.score,
+          time: vm.totalTime
+        };
+        console.log(quizStatsForLeaderboard);
+      }
+
+      QuizService.addToLeaderboard( quizStatsForLeaderboard ).then(function(response){
+        vm.leaderboard = QuizService.leaderboard;
+      });
 
       vm.go('/quizEnd'); // go to quizEnd screen
     } // end END QUIZ SCENARIO
@@ -130,21 +154,15 @@ function QuizController(QuizService, $location) {
       vm.qTS = vm.questionsArray[vm.currentQuestion];
 
       // declare possibleAnswers, which will be all answers correct or not
-      // vm.qTS.possibleAnswers = vm.qTS.incorrect_answers;
       vm.qTS.possibleAnswers = angular.copy(vm.qTS.incorrect_answers);
-      // console.log('incorrect_answers are:', vm.qTS.incorrect_answers);
-      // console.log('before push, possibleAnswers are:', vm.qTS.possibleAnswers);
-      
-      // add in the correct_answer to list of possibleAnswers
-      // console.log('correct_answer is:', vm.qTS.correct_answer);
-      vm.qTS.possibleAnswers.push(vm.qTS.correct_answer);
-      // console.log('after push, possibleAnswers are:', vm.qTS.possibleAnswers);
 
-      // something weird here!  What's the difference between those two logs?!
+      // add in the correct_answer to list of possibleAnswers
+      vm.qTS.possibleAnswers.push(vm.qTS.correct_answer);
+      // something weird here!  correct_answer has been added to incorrect_answers?!
 
       // decode all text to remove HTML entities
       vm.qTS.question = decodeEntities(vm.qTS.question);
-      // vm.qTS.correct_answer = decodeEntities(vm.qTS.correct_answer);
+      vm.qTS.correct_answer = decodeEntities(vm.qTS.correct_answer);
       for (var i = 0; i < vm.qTS.possibleAnswers.length; i++) {
         vm.qTS.possibleAnswers[i] = decodeEntities(vm.qTS.possibleAnswers[i]);
       }
@@ -160,7 +178,6 @@ function QuizController(QuizService, $location) {
   vm.correct = function() {
     // console.log("You're right!");
     vm.lastAnswerWasCorrect = true;
-    vm.firstQuestion = false;
     vm.rightAnswer = vm.qTS.correct_answer;
     // increment current quiz stats
     vm.score++;
@@ -173,7 +190,6 @@ function QuizController(QuizService, $location) {
   vm.incorrect = function(wrongAnswer) {
     // console.log("Sorry,", wrongAnswer, "is incorrect!");
     vm.lastAnswerWasCorrect = false;
-    vm.firstQuestion = false;
     vm.wrongAnswer = wrongAnswer;
     vm.rightAnswer = vm.qTS.correct_answer;
     console.log('right:', vm.rightAnswer, ', and wrong:', vm.wrongAnswer);
@@ -194,6 +210,7 @@ function QuizController(QuizService, $location) {
         vm.quizInProgress = response.data;
         // and if a quiz is NOT already in progress...
         if (vm.quizInProgress == false) {
+          QuizService.clearQuestions();
           // then go to Quiz Leader Screen to set game options
           $location.path('/quizLeader');
         } else {
@@ -218,7 +235,6 @@ function QuizController(QuizService, $location) {
 
   vm.playerStartIfReady = function() {
     QuizService.getSharedQuestions().then(function(response){
-      console.log('questionsToShare is:', QuizService.questionsToShare);
       if (QuizService.questionsToShare.data) {
         console.log('questions are ready to share!', QuizService.questionsToShare.data);
         vm.questionsArray = QuizService.questionsToShare.data;
@@ -239,13 +255,15 @@ function QuizController(QuizService, $location) {
         vm.startTime = new Date();
         vm.go('/quiz');
       } else {
-        console.log('questions are NOT ready to share!!!!!!!!!!!!!!');
+        console.log('questions are NOT ready to share!!!!!!!!!!');
       }
     });
+  };
 
-    // if questions are available, start game
-    // start a timer too
-
+  vm.showLeaderboard = function() {
+    QuizService.getLeaderboard().then(function(response) {
+      vm.leaderboard = QuizService.leaderboard;
+    });
   };
 
 
@@ -263,7 +281,7 @@ function QuizController(QuizService, $location) {
       QuizService.postRegister(credentials).then(function(response) {
         if (response.status == 201) {
           vm.go('/');
-          vm.inputed.username = '';
+          // vm.inputed.username = '';
           vm.inputed.password = '';
           vm.inputed.password2 = '';
         } else {}
@@ -281,7 +299,7 @@ function QuizController(QuizService, $location) {
       // if log-in successful
       if (response.data == 'we got it') {
         // clear inputs
-        vm.inputed.username = '';
+        // vm.inputed.username = '';
         vm.inputed.password = '';
         // load currentUser object
         QuizService.getCurrentUser(credentials).then(function() {

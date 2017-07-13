@@ -11,7 +11,7 @@ router.use(bodyParser.json());
 router.put('/', function(req, res) {
   // Find the existing resource by Mongo _id
   user.findById(req.body._id, function(err, stats) {
-    console.log('req.body._id is:', req.body._id);
+    // console.log('req.body._id is:', req.body._id);
     // Handle any possible database errors
     if (err) {
       res.status(500).send(err);

@@ -58,14 +58,6 @@
     });
   }; // end getQuizInProgress
 
-  sv.shareTheQuestions = function( questions ) {
-    return $http.post('/questions', questions ).then(function( response ){
-      sv.questionsToShare = response;
-      console.log('in quiz.service, sv.questionsToShare is:', sv.questionsToShare);
-      return response;
-    });
-  }; // end shareTheQuestions
-
   sv.getSharedQuestions = function() {
     return $http.get('/questions').then(function( response ){
       sv.questionsToShare = response;
@@ -73,5 +65,43 @@
       return response;
     });
   }; // end getSharedQuestions
+
+  sv.shareTheQuestions = function( questions ) {
+    return $http.post('/questions', questions ).then(function( response ){
+      sv.questionsToShare = response;
+      // console.log('in quiz.service, sv.questionsToShare is:', sv.questionsToShare);
+      return response;
+    });
+  }; // end shareTheQuestions
+
+  sv.clearQuestions = function() {
+    return $http.delete('/questions').then(function( response ){
+      console.log('in quiz.service, clearing questions');
+      return response;
+    });
+  }; // end clearQuestions
+
+  sv.getLeaderboard = function() {
+    return $http.get('/leaderboard').then(function( response ){
+      sv.leaderboard = response.data;
+      // console.log('in quiz.service, GET to /q, sv.leaderboard is:', sv.leaderboard);
+      return response;
+    });
+  }; // end getLeaderboard
+
+  sv.addToLeaderboard = function( finisherInfo ) {
+    return $http.post('/leaderboard', finisherInfo ).then(function( response ){
+      sv.leaderboard = response.data;
+      // console.log('in quiz.service, POST to /leaderboard, sv.leaderboard is:', sv.leaderboard);
+      return response;
+    });
+  };
+
+  sv.clearLeaderboard = function() {
+    return $http.delete('/leaderboard').then(function( response ){
+      console.log('in quiz.service, clearing leaderboard');
+      return response;
+    });
+  }; // end clearLeaderboard
 
 });

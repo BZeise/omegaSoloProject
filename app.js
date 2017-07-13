@@ -6,6 +6,7 @@ var users = require('./modules/routes/users' );
 var stats = require('./modules/routes/stats' );
 var quiz = require('./modules/routes/quiz' );
 var questions = require('./modules/routes/questions' );
+var leaderboard = require('./modules/routes/leaderboard' );
 // add extra routes when needed
 
 app.use(express.static('public'));
@@ -15,6 +16,7 @@ app.use( '/users', users );
 app.use( '/stats', stats );
 app.use( '/quiz', quiz );
 app.use( '/questions', questions );
+app.use( '/leaderboard', leaderboard );
 
 var port = process.env.PORT || 7878;
 

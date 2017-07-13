@@ -1,6 +1,8 @@
 <div ng-hide="qc.currentUser"> <!-- div is hidden if logged in -->
-  <input type="text" placeholder="Guest Name?" ng-model="qc.inputed.username">
-  <md-button class="md-raised md-primary" ng-click="qc.go('/start')">Start as Guest</md-button>
+  <form name="guest">
+    <input type="text" placeholder="Guest Name?" ng-model="qc.inputed.username" required>
+    <md-button class="md-raised md-primary" ng-click="qc.go('/start')" ng-disabled="guest.$invalid">Start as Guest</md-button>
+  </form>
   <p>
     Returning?<button ng-click="qc.go('/login')">Login!</button>
     Or<button ng-click="qc.go('/register')">Register!</button>

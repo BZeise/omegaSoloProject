@@ -18,4 +18,9 @@ router.post('/', function(req, res) {
     res.send(questionsToShare);
 });
 
+router.delete('/', function(req, res) {
+    questionsToShare = '';
+    res.sendStatus(200);
+});
+
 module.exports = router;

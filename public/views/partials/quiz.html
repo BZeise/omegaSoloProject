@@ -1,11 +1,11 @@
 <div>
   User:  {{qc.currentUser ? qc.currentUser.username : qc.inputed.username}} <br>
-  Question #{{qc.currentQuestion + 1}} / {{qc.numQuestions}} <br>
+  Question #{{qc.currentQuestion + 1}} / {{qc.questionsArray.length}} <br>
   Category:  {{qc.qTS.category}} <br>
-  Difficulty:  {{qc.qTS.difficulty}}
+  <span class="capitalize">Difficulty:  {{qc.qTS.difficulty}}</span>
   <p>{{qc.qTS.question}}</p>
   <ul>
-    <li ng-repeat="x in qc.qTS.possibleAnswers track by $index">
+    <li ng-repeat="x in qc.qTS.possibleAnswers">
       <button class="answerButton" ng-click="qc.answer(x)">
         {{x}}
       </button>
