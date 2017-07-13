@@ -61,7 +61,7 @@
   sv.shareTheQuestions = function( questions ) {
     return $http.post('/questions', questions ).then(function( response ){
       sv.questionsToShare = response;
-      // console.log('in quiz.service, sv.questionsToShare is:', sv.questionsToShare);
+      console.log('in quiz.service, sv.questionsToShare is:', sv.questionsToShare);
       return response;
     });
   }; // end shareTheQuestions

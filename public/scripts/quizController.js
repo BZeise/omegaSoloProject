@@ -77,6 +77,7 @@ function QuizController(QuizService, $location) {
 
     QuizService.getQuestions(apiString).then(function(response) {
       vm.questionsArray = QuizService.theQuestions;
+      console.log('vm.questionsArray is', vm.questionsArray);
       QuizService.shareTheQuestions(vm.questionsArray);
 
       // preps the next question
@@ -129,14 +130,21 @@ function QuizController(QuizService, $location) {
       vm.qTS = vm.questionsArray[vm.currentQuestion];
 
       // declare possibleAnswers, which will be all answers correct or not
-      vm.qTS.possibleAnswers = vm.qTS.incorrect_answers;
+      // vm.qTS.possibleAnswers = vm.qTS.incorrect_answers;
+      vm.qTS.possibleAnswers = angular.copy(vm.qTS.incorrect_answers);
+      // console.log('incorrect_answers are:', vm.qTS.incorrect_answers);
+      // console.log('before push, possibleAnswers are:', vm.qTS.possibleAnswers);
+      
       // add in the correct_answer to list of possibleAnswers
+      // console.log('correct_answer is:', vm.qTS.correct_answer);
       vm.qTS.possibleAnswers.push(vm.qTS.correct_answer);
+      // console.log('after push, possibleAnswers are:', vm.qTS.possibleAnswers);
+
       // something weird here!  What's the difference between those two logs?!
 
       // decode all text to remove HTML entities
       vm.qTS.question = decodeEntities(vm.qTS.question);
-      vm.qTS.correct_answer = decodeEntities(vm.qTS.correct_answer);
+      // vm.qTS.correct_answer = decodeEntities(vm.qTS.correct_answer);
       for (var i = 0; i < vm.qTS.possibleAnswers.length; i++) {
         vm.qTS.possibleAnswers[i] = decodeEntities(vm.qTS.possibleAnswers[i]);
       }
@@ -226,7 +234,7 @@ function QuizController(QuizService, $location) {
         // preps the next question
         vm.currentQuestion = -1;
         vm.nextQuestion();
-        
+
         // timer
         vm.startTime = new Date();
         vm.go('/quiz');
