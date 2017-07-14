@@ -280,10 +280,16 @@ function QuizController(QuizService, $location) {
       };
       QuizService.postRegister(credentials).then(function(response) {
         if (response.status == 201) {
-          vm.go('/');
+
           // vm.inputed.username = '';
           vm.inputed.password = '';
           vm.inputed.password2 = '';
+          // load currentUser object
+          QuizService.getCurrentUser(credentials).then(function() {
+            // console.log('vm.currentUser is: ', QuizService.currentUser.data);
+            vm.currentUser = QuizService.currentUser.data;
+          });
+          vm.go('/');
         } else {}
       });
     }

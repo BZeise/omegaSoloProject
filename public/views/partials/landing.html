@@ -1,17 +1,37 @@
-<div ng-hide="qc.currentUser"> <!-- div is hidden if logged in -->
-  <form name="guest">
-    <input type="text" placeholder="Guest Name?" ng-model="qc.inputed.username" required>
-    <md-button class="md-raised md-primary" ng-click="qc.go('/start')" ng-disabled="guest.$invalid">Start as Guest</md-button>
-  </form>
-  <p>
-    Returning?<button ng-click="qc.go('/login')">Login!</button>
-    Or<button ng-click="qc.go('/register')">Register!</button>
-  </p>
+<md-toolbar class="md-primary">
+  <div class="md-toolbar-tools bigLogo">
+    <img flex-offset="5" src="../images/Lightning Round Red.png" alt="Lightning Round">
+  </div>
+</md-toolbar>
+
+<div ng-hide="qc.currentUser" layout="column" layout-align="space-around center">
+  <!-- div is hidden if logged in -->
+  <div style="margin-top: 50px">
+    <form name="guest">
+      <input style="width: 60vw" type="text" placeholder="Guest Name?" ng-model="qc.inputed.username" required>
+  </div>
+  <div>
+    <md-button class="md-raised md-primary landingButton" ng-click="qc.go('/start')" ng-disabled="guest.$invalid">Start as Guest</md-button>
+    </form>
+  </div>
+  <div style="margin-top: 10px">
+    Or<md-button class="md-raised md-primary md-hue-3 landingButton registerButton" ng-click="qc.go('/register')">Register a new user!</md-button>
+  </div>
+  <div style="margin-top: 50px">
+    <span>Already registered?</span>  <br>
+    <md-button class="md-raised md-primary md-hue-3 landingButton" ng-click="qc.go('/login')">Login!</md-button>
+  </div>
 </div>
 
-<div ng-show="qc.currentUser">
-  You're logged in as {{qc.currentUser.username}}.
-  <md-button class="md-raised md-primary" ng-click="qc.go('/start')">Start Quiz!</md-button>
-  <md-button class="md-raised md-warn" ng-click="qc.logOut()">Log out</md-button>
+<div ng-show="qc.currentUser" layout="column" layout-align="space-around center">
+  <div>
+    You're logged in as {{qc.currentUser.username}}.
+  </div>
+  <div>
+    <md-button class="md-raised md-primary" ng-click="qc.go('/start')">Start Quiz!</md-button>
+  </div>
+  <div>
+    <md-button class="md-raised md-warn" ng-click="qc.logOut()">Log out</md-button>
+  </div>
   <!-- <div class="userDiv">Userpage</div> -->
 </div>
