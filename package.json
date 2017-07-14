@@ -23,6 +23,7 @@
     "angular-aria": "^1.6.5",
     "angular-material": "^1.1.4",
     "angular-route": "^1.6.5",
+    "angular-sanitize": "^1.6.5",
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",

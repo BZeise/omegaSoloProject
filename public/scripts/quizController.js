@@ -1,7 +1,7 @@
 // console.log( 'quizController.js loaded' );
 
 // declare app
-var app = angular.module('myApp', ['ngRoute', 'ngMaterial']);
+var app = angular.module('myApp', ['ngRoute', 'ngMaterial', 'ngSanitize']);
 
 // declare config for ngRoute to show different pages
 app.config(function($routeProvider) {
@@ -32,8 +32,11 @@ app.config(function($routeProvider) {
 // declare controller
 app.controller('QuizController', QuizController);
 
-function QuizController(QuizService, $location) {
+function QuizController(QuizService, $location, $mdDialog) {
   var vm = this;
+
+  vm.status = '  ';
+  vm.customFullscreen = false;
 
   // quiz operation variables
   vm.currentQuestion = 0;
@@ -345,6 +348,22 @@ function QuizController(QuizService, $location) {
     }
     return decodeHTMLEntities;
   })(); // end decodeEntities
+
+  vm.showAlert = function(ev) {
+    // Appending dialog to document.body to cover sidenav in docs app
+    // Modal dialogs should fully cover application
+    // to prevent interaction outside of dialog
+    $mdDialog.show(
+      $mdDialog.alert()
+        .parent(angular.element(document.querySelector('#popupContainer')))
+        .clickOutsideToClose(true)
+        .title('How to Play!')
+        .htmlContent("LightningRound is a trivia quiz challenge, designed to be played with nearby friends!<br><br>The first player will set options, then other players can join in and take the same quiz!<br><br>HIGH SCORE WINS, BUT THE FASTEST TIME BREAKS TIES!")
+        .ariaLabel('How to Play')
+        .ok("I got it!")
+        .targetEvent(ev)
+    );
+  };
 
 } // end QuizController
 
