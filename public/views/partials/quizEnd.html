@@ -12,11 +12,66 @@
   </div>
 </div>
 
+
+<ol>
+  <li ng-repeat="x in qc.leaderboard | orderBy:['-score','time']">
+    Score of: {{x.score}}, in {{(x.time) / 1000 | number:1}}s --- {{x.username}}
+  </li>
+</ol>
+
+<div class="leaderboardDiv content" layout="column" layout-align="start stretch" layout-margin layout-padding>
+  <div layout="row" ng-repeat="x in qc.leaderboard | orderBy:['-score','time']">
+    <div flex="10" class="md-headline">
+      {{$index + 1}}
+    </div>
+    <div flex="grow" class="md-headline">
+      {{x.username}}
+    </div>
+    <div flex="20">
+      <div layout="column" style="text-align: center">
+        <div>
+          <div flex class="md-caption">
+            {{x.score}} / {{qc.numQuestions}}
+          </div>
+          <div flex class="md-body-2">
+            {{(x.time) / 1000 | number:1}}s
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+
+<!-- <table class="leaderboardTable">
+  <thead>
+    <tr>
+      <th class="md-display-1">
+        THE QUIZ IS OVER
+      </th>
+    </tr>
+  </thead>
+  <tbody ng-repeat="x in qc.leaderboard | orderBy:['-score','time']">
+    <tr>
+      <td>{{$index}}</td>
+      <td>{{x.username}}</td>
+      <td>
+        <div layout="column" style="text-align: right">
+          <div>
+            <div flex class="md-caption">
+              {{x.score}}
+            </div>
+            <div flex class="md-body-2">
+              {{(x.time) / 1000 | number:1}}s
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table> -->
+
 <div layout="column" class="content" layout-align="center center">
 
-      <ol>
-        <li ng-repeat="x in qc.leaderboard | orderBy:['-score','time']">Score of: {{x.score}}, in {{(x.time) / 1000 | number:1}}s --- {{x.username}}</li>
-      </ol>
     <md-button layout-margin class="md-raised md-primary myButtons landingButtons" ng-click="qc.showLeaderboard()">Update Leaderboard</md-button>
     <br>
     <div flex>
