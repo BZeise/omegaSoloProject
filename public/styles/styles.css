@@ -24,6 +24,14 @@ img {
   width: 60vw;
 }
 
+.endQuizButton {
+  border-radius: 15px;
+  background-color: rgba(216, 45, 45, 0.8);
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
 .bigLogo {
   height: 150px;
   max-height: 150px;
@@ -54,10 +62,19 @@ span {
   background-color: rgba(79, 180, 0, 0.8);
   padding: 10px;
   border-radius: 10px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 
 .failure {
   background-color: rgba(236, 19, 19, 0.8);
   padding: 10px;
   border-radius: 10px;
+  color: white;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+.clock {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
 }

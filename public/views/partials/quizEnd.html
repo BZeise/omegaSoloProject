@@ -12,30 +12,27 @@
   </div>
 </div>
 
-<div layout="column" layout-align="center center">
-  <!-- Final score:  {{qc.score}} / {{qc.numQuestions}} -->
-  <!-- Total time:  {{(qc.totalTime) / 1000 | number:1}}s -->
-  <div flex="80" flex-offset="10" layout-margin layout-padding ng-show="qc.lastAnswerWasCorrect" class="success">
-    {{qc.rightAnswer}} was correct!
-  </div>
-  <div flex="70" flex-offset="15" layout-margin layout-padding  ng-hide="qc.lastAnswerWasCorrect" class="failure">
-    <span class="youGuessedWrong">Your Guess: {{qc.wrongAnswer}}</span><br>
-    <span class="youGuessedRight">Correct Answer:  {{qc.rightAnswer}}</span>
-  </div>
-  <!-- <div ng-show="qc.winner">
-    You won!
-  </div> -->
-  <div class="content">
-    <p>
-      Placement:
+<div layout="column" class="content" layout-align="center center">
+
       <ol>
         <li ng-repeat="x in qc.leaderboard | orderBy:['-score','time']">Score of: {{x.score}}, in {{(x.time) / 1000 | number:1}}s --- {{x.username}}</li>
       </ol>
-    </p>
-    <md-button layout-margin class="md-raised md-primary myButtons landingButtons" ng-click="qc.showLeaderboard()">Get Leaderboard</md-button>
+    <md-button layout-margin class="md-raised md-primary myButtons landingButtons" ng-click="qc.showLeaderboard()">Update Leaderboard</md-button>
     <br>
-    <md-button layout-margin class="md-raised md-warn myButtons md-hue-1" ng-click="qc.go('/')">Exit</md-button>
-    <md-button layout-margin class="md-raised md-primary myButtons md-hue-1" ng-click="qc.go('/start')">Play Again!</md-button>
-  </div>
+    <div flex>
+      <div layout-margin layout-padding ng-show="qc.lastAnswerWasCorrect" class="success">
+        {{qc.rightAnswer}} was correct!
+      </div>
+      <div flex layout-margin layout-padding ng-hide="qc.lastAnswerWasCorrect" class="failure">
+        <span class="youGuessedWrong">Your Guess: {{qc.wrongAnswer}}</span><br>
+        <span class="youGuessedRight">Correct Answer:  {{qc.rightAnswer}}</span>
+      </div>
+    </div>
+    <div layout="row">
+      <md-button layout-margin class="md-raised md-warn myButtons md-hue-1" ng-click="qc.go('/')">Exit</md-button>
+      <md-button layout-margin class="md-raised md-primary myButtons md-hue-1" ng-click="qc.go('/start')">Play Again!</md-button>
+    </div>
+
+
 
 </div>

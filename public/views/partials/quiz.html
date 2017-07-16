@@ -42,7 +42,9 @@
       <span class="youGuessedRight">Correct Answer:  {{qc.rightAnswer}}</span>
     </div>
   </div>
-  <md-button ng-click="qc.endQuiz(); qc.go('/')">END QUIZ AND LEAVE</md-button>
+  <img class ="clock" src="../images/clock.gif" alt="timer">
+
+  <md-button class="endQuizButton" ng-click="qc.endQuiz();">END QUIZ</md-button>
   <!-- <md-button ng-click="qc.go('/')">JUST LEAVE</md-button> -->
 </div>
 

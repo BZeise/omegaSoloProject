@@ -1,7 +1,7 @@
 // console.log( 'quizController.js loaded' );
 
 // declare app
-var app = angular.module('myApp', ['ngRoute', 'ngMaterial', 'ngSanitize']);
+var app = angular.module('myApp', ['ngRoute', 'ngMaterial', 'ngSanitize', 'timer']);
 
 // declare config for ngRoute to show different pages
 app.config(function($routeProvider) {
@@ -93,6 +93,7 @@ function QuizController(QuizService, $location, $mdDialog) {
 
       // timer
       vm.startTime = new Date();
+      vm.timerRunning = true;
       // console.log('startTime is:', vm.startTime);
     });
   }; // end beginQuiz
@@ -123,6 +124,7 @@ function QuizController(QuizService, $location, $mdDialog) {
       // timer
       vm.endTime = new Date();
       vm.totalTime = vm.endTime - vm.startTime;
+      vm.timerRunning = false;
 
       if (vm.currentUser) {
         vm.currentUser.userStats.totalQuizzes++;
@@ -234,7 +236,27 @@ function QuizController(QuizService, $location, $mdDialog) {
   }; // end vm.getOptions
 
   vm.endQuiz = function() {
-    QuizService.endQuizInProgress();
+    swal({
+            title: "End quiz?",
+            text: "Others can finish, but no new players can join this quiz.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#ec1313",
+            confirmButtonText: "Yes, we're done with this game!",
+            cancelButtonText: "No, I'm not a troll!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+        function(isConfirm) {
+            if (isConfirm) {
+                QuizService.endQuizInProgress();
+                vm.go('/');
+                swal("Quiz quit!", "Quirky quiz quitter quietly acquiesces.", "success");
+                soundEffect('/media/destroy.m4a');
+            } else {
+                swal("Cancelled", "Get back to it then!", "error");
+            }
+        });
   };
 
   vm.playerStartIfReady = function() {
