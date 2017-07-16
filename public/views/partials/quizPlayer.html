@@ -12,12 +12,27 @@
   </div>
 </div>
 
-<div>
-  Logged in as:  {{qc.currentUser ? qc.currentUser.username : qc.inputed.username}}
-  <p>
-    Once leader has begun, this button will launch the quiz!
-    <button ng-click="qc.playerStartIfReady()">LET'S DO THIS QUIZ</button>
-    {{qc.patienceText}}
-  </p>
-  <button ng-click="qc.go('/')">Cancel</button>
+<div layout-margin class="content" layout="column" layout-align="space-around center">
+  <div flex class="md-title">
+    <p>
+      Once the leader has begun, this button will launch the quiz!
+    </p>
+    <p>
+      Your timer starts whenever you start!
+    </p>
+    <p>
+      Remember:<br>
+      High SCORE WINS<br>
+      but TIME BREAKS TIES!
+    </p>
+    <p>
+      Good luck!
+    </p>
+</div>
+  <div flex>
+    <md-button class="md-raised md-primary" ng-click="qc.playerStartIfReady()">LET'S DO THIS QUIZ</md-button>
+  </div>
+  <div flex>
+    <md-button class="md-raised md-warn md-hue-3" ng-click="qc.go('/')">Cancel</md-button>
+  </div>
 </div>

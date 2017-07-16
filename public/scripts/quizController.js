@@ -375,7 +375,7 @@ function QuizController(QuizService, $location, $mdDialog) {
         .parent(angular.element(document.querySelector('#popupContainer')))
         .clickOutsideToClose(true)
         .title('How to Play!')
-        .htmlContent('LightningRound is a trivia quiz challenge, designed to be played with nearby friends!<br><br>The first player will set options, then other players can join in and take the same quiz!<br><br>HIGH SCORE WINS, BUT THE FASTEST TIME BREAKS TIES!<br><br>Photo by Brandon Morgan on Unsplash')
+        .htmlContent('LightningRound is a trivia quiz challenge, designed to be played with nearby friends!<br><br>The first player will set options, then other players can join in and take the same quiz!<br><br>HIGH SCORE WINS, BUT THE FASTEST TIME BREAKS TIES!<br><br>Photo by Brandon Morgan on Unsplash<br><br>Lightning Round&copy Ben Zeise 2017')
         .ariaLabel('How to Play')
         .ok("I got it!")
         .targetEvent(ev)

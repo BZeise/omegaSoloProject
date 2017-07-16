@@ -8,7 +8,6 @@ body {
   /* all these do is try to prevent scrolling*/
 
   background-image: url("../images/lightning.jpg");
-  background-repeat: no-repeat;
   background-position: center;
 }
 
@@ -21,13 +20,12 @@ img {
 }
 
 .landingButtons {
-  width: 60vw;
+  min-width: 60vw;
 }
 
 .endQuizButton {
   border-radius: 15px;
   background-color: rgba(216, 45, 45, 0.8);
-  margin: 0 auto;
   text-align: center;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
