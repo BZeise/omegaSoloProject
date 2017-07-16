@@ -1,7 +1,7 @@
 // console.log( 'quizController.js loaded' );
 
 // declare app
-var app = angular.module('myApp', ['ngRoute', 'ngMaterial', 'ngSanitize', 'timer']);
+var app = angular.module('myApp', ['ngRoute', 'ngMaterial', 'ngSanitize']);
 
 // declare config for ngRoute to show different pages
 app.config(function($routeProvider) {
@@ -89,12 +89,9 @@ function QuizController(QuizService, $location, $mdDialog) {
       // preps the next question
       vm.currentQuestion = -1;
       vm.nextQuestion();
-      // vm.quizInProgress = true; // quizInProgress now set to true in initial GET call to server
 
       // timer
       vm.startTime = new Date();
-      vm.timerRunning = true;
-      // console.log('startTime is:', vm.startTime);
     });
   }; // end beginQuiz
 
@@ -120,15 +117,12 @@ function QuizController(QuizService, $location, $mdDialog) {
       vm.qTS = {}; // clear qTS
       vm.questionsArray = '';
       QuizService.endQuizInProgress();
-      // vm.lastAnswerWasCorrect = '';
       // timer
       vm.endTime = new Date();
       vm.totalTime = vm.endTime - vm.startTime;
-      vm.timerRunning = false;
 
       if (vm.currentUser) {
         vm.currentUser.userStats.totalQuizzes++;
-        // console.log('vm.currentUser.userStats is: ', vm.currentUser.userStats);
         QuizService.sendStats(vm.currentUser);
         console.log('vm.inputed.username is:', vm.inputed.username);
         quizStatsForLeaderboard = {
