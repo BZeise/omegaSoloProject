@@ -246,7 +246,6 @@ function QuizController(QuizService, $location, $mdDialog) {
                 QuizService.endQuizInProgress();
                 vm.go('/');
                 swal("Quiz quit!", "Quirky quiz quitter quietly acquiesces.", "success");
-                soundEffect('/media/destroy.m4a');
             } else {
                 swal("Cancelled", "Get back to it then!", "error");
             }
