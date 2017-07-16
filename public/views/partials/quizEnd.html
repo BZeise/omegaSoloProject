@@ -1,30 +1,41 @@
-<md-toolbar class="md-primary">
-  <div class="md-toolbar-tools">
-    <img flex-offset="35" src="../images/Lightning Round Red.png" alt="Lightning Round">
+<div layout="row" layout-align="space-between end" layout-padding>
+  <img flex-offset="30" flex="40" src="../images/Lightning Round Red.png" alt="Lightning Round">
+  <div layout="column" style="text-align: right" flex="grow">
+    <div id="loginInfo">
+      <div flex class="md-caption">
+        {{qc.currentUser ? "User:" : "Guest:"}}
+      </div>
+      <div flex class="md-body-2">
+        {{qc.currentUser ? qc.currentUser.username : qc.inputed.username}}
+      </div>
+    </div>
   </div>
-</md-toolbar>
+</div>
 
-<div>
-  Final score:  {{qc.score}} / {{qc.numQuestions}}
-  Total time:  {{(qc.totalTime) / 1000 | number:1}}s
-  <p ng-show="qc.lastAnswerWasCorrect">
+<div layout="column">
+  <!-- Final score:  {{qc.score}} / {{qc.numQuestions}} -->
+  <!-- Total time:  {{(qc.totalTime) / 1000 | number:1}}s -->
+  <div flex="80" flex-offset="10" layout-margin layout-padding ng-show="qc.lastAnswerWasCorrect" class="success">
     {{qc.rightAnswer}} was correct!
-  </p>
-  <p ng-hide="qc.lastAnswerWasCorrect">
-    <span class="youGuessedWrong">Your Guess: {{qc.wrongAnswer}}</span>
+  </div>
+  <div flex="70" flex-offset="15" layout-margin layout-padding  ng-hide="qc.lastAnswerWasCorrect" class="failure">
+    <span class="youGuessedWrong">Your Guess: {{qc.wrongAnswer}}</span><br>
     <span class="youGuessedRight">Correct Answer:  {{qc.rightAnswer}}</span>
-  </p>
+  </div>
   <!-- <div ng-show="qc.winner">
     You won!
   </div> -->
-  <button ng-click="qc.showLeaderboard()">Get Leaderboard</button>
-  <p>
-    Placement:
-    <ol>
-      <li ng-repeat="x in qc.leaderboard | orderBy:['-score','time']">Score of: {{x.score}}, in {{(x.time) / 1000 | number:1}}s --- {{x.username}}</li>
-    </ol>
-  </p>
+  <div class="content">
+    <md-button class="md-raised md-primary myButtons" ng-click="qc.showLeaderboard()">Get Leaderboard</md-button>
+    <p>
+      Placement:
+      <ol>
+        <li ng-repeat="x in qc.leaderboard | orderBy:['-score','time']">Score of: {{x.score}}, in {{(x.time) / 1000 | number:1}}s --- {{x.username}}</li>
+      </ol>
+    </p>
 
-  <button ng-click="qc.go('/')">Exit</button>
-  <button ng-click="qc.go('/start')">Play Again!</button>
+    <md-button class="md-raised md-warn myButtons" ng-click="qc.go('/')">Exit</md-button>
+    <md-button class="md-raised md-primary myButtons" ng-click="qc.go('/start')">Play Again!</md-button>
+  </div>
+
 </div>

@@ -3,33 +3,61 @@
 }
 
 body {
-  max-height: 80vh !important;
+  max-height: 100vh !important;
   min-height: 1vh;
   /* all these do is try to prevent scrolling*/
+
+  background-image: url("../images/lightning.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 img {
   height:inherit;
 }
 
-.black {
-  background-color: #000000;
+.myButtons {
+  border-radius: 15px;
 }
 
-.landingButton {
-  width: 200px;
-}
-
-.registerButton {
-  width: 180px;
+.landingButtons {
+  width: 60vw;
 }
 
 .bigLogo {
   height: 150px;
   max-height: 150px;
+  /*background-color: rgb(13, 46, 120);*/
 }
 
 span {
   width: 200px;
   text-align: center;
+}
+
+.content {
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 90vw;
+  border-radius: 25px;
+  margin: 0 auto;
+  margin-top: 10px;
+  text-align: center;
+}
+
+#loginInfo {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 25px;
+  text-align: center;
+}
+
+.success {
+  background-color: rgba(79, 180, 0, 0.9);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.failure {
+  background-color: rgba(236, 19, 19, 0.9);
+  padding: 10px;
+  border-radius: 10px;
 }

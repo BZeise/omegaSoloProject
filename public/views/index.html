@@ -23,8 +23,9 @@
   <title>Lightning Round</title>
 </head>
   <body ng-app="myApp">
-    <div class="container" ng-controller="QuizController as qc" ng-init="qc.getOptions()">
+    <div ng-controller="QuizController as qc" ng-init="qc.getOptions()">
       <ng-view></ng-view>
     </div>
+
   </body>
 </html>

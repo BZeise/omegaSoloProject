@@ -1,32 +1,49 @@
-<md-toolbar class="md-primary">
-  <div class="md-toolbar-tools">
-    <img flex-offset="35" src="../images/Lightning Round Red.png" alt="Lightning Round">
+<div layout="row" layout-align="space-between end" layout-padding>
+  <img flex-offset="30" flex="40" src="../images/Lightning Round Red.png" alt="Lightning Round">
+  <div layout="column" style="text-align: right" flex="grow">
+    <div id="loginInfo">
+      <div flex class="md-caption">
+        {{qc.currentUser ? "User:" : "Guest:"}}
+      </div>
+      <div flex class="md-body-2">
+        {{qc.currentUser ? qc.currentUser.username : qc.inputed.username}}
+      </div>
+    </div>
   </div>
-</md-toolbar>
+</div>
 
-<div>
-  User:  {{qc.currentUser ? qc.currentUser.username : qc.inputed.username}} <br>
-  Question #{{qc.currentQuestion + 1}} / {{qc.questionsArray.length}} <br>
-  Category:  {{qc.qTS.category}} <br>
-  <span class="capitalize">Difficulty:  {{qc.qTS.difficulty}}</span>
-  <p>{{qc.qTS.question}}</p>
-  <ul>
-    <li ng-repeat="x in qc.qTS.possibleAnswers">
-      <button class="answerButton" ng-click="qc.answer(x)">
-        {{x}}
-      </button>
-    </li>
-  </ul>
-  <div ng-hide="qc.firstQuestion">
-    <p ng-show="qc.lastAnswerWasCorrect">
-      {{qc.rightAnswer}} was correct!
-    </p>
-    <p ng-hide="qc.lastAnswerWasCorrect">
-      <span class="youGuessedWrong">Your Guess: {{qc.wrongAnswer}}</span>
-      <span class="youGuessedRight">Correct Answer:  {{qc.rightAnswer}}</span>
-    </p>
+<div layout="column">
+  <div layout="row" layout-margin>
+    <div flex="40"></div>
+    <div flex="grow" class="content md-body-1">
+      Question #{{qc.currentQuestion + 1}} / {{qc.questionsArray.length}}<br>
+      Current score:  {{qc.score}} / {{qc.numQuestions}}<br>
+      Category:  {{qc.qTS.category}}<br>
+      <span class="capitalize">Difficulty:  {{qc.qTS.difficulty}}</span>
+    </div>
   </div>
-  Current score:  {{qc.score}} / {{qc.numQuestions}}
-  <button ng-click="qc.endQuiz(); qc.go('/')">END QUIZ AND LEAVE</button>
-  <button ng-click="qc.go('/')">JUST LEAVE</button>
+
+<div layout="column" class="content" layout-align="center center">
+  <p>{{qc.qTS.question}}</p>
+  <!-- <ul> -->
+    <!-- <li ng-repeat="x in qc.qTS.possibleAnswers"> -->
+      <md-button class="md-raised md-primary myButtons landingButtons"
+      ng-repeat="x in qc.qTS.possibleAnswers" class="answerButton" ng-click="qc.answer(x)">
+        {{x}}
+      </md-button><br>
+    <!-- </li> -->
+  <!-- </ul> -->
+  <div flex ng-hide="qc.firstQuestion">
+    <div ng-show="qc.lastAnswerWasCorrect" class="success">
+      {{qc.rightAnswer}} was correct!
+    </div>
+    <div flex ng-hide="qc.lastAnswerWasCorrect" class="failure">
+      <span class="youGuessedWrong">Your Guess: {{qc.wrongAnswer}}</span><br>
+      <span class="youGuessedRight">Correct Answer:  {{qc.rightAnswer}}</span>
+    </div>
+  </div>
+  <md-button ng-click="qc.endQuiz(); qc.go('/')">END QUIZ AND LEAVE</md-button>
+  <!-- <md-button ng-click="qc.go('/')">JUST LEAVE</md-button> -->
+</div>
+
 </div>

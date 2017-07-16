@@ -1,69 +1,67 @@
-<md-toolbar class="md-primary">
-  <div class="md-toolbar-tools">
-    <img flex-offset="35" src="../images/Lightning Round Red.png" alt="Lightning Round">
+<div layout="row" layout-align="space-between end" layout-padding>
+  <img flex-offset="30" flex="40" src="../images/Lightning Round Red.png" alt="Lightning Round">
+  <div layout="column" style="text-align: right" flex="grow">
+    <div id="loginInfo">
+      <div flex class="md-caption">
+        {{qc.currentUser ? "User:" : "Guest:"}}
+      </div>
+      <div flex class="md-body-2">
+        {{qc.currentUser ? qc.currentUser.username : qc.inputed.username}}
+      </div>
+    </div>
   </div>
-</md-toolbar>
+</div>
 
-<div>
-  <md-card>
-    <md-card-title>
-      <md-card-title-text>
-        <span class="md-headline">Quiz Options</span>
-        <span class="md-subhead">LEAVE BLANK for DEFAULT options</span>
-        User:  {{qc.currentUser ? qc.currentUser.username : qc.inputed.username}} <br>
-      </md-card-title-text>
-    </md-card-title>
+<div class="content" layout="column" layout-align="center center">
 
-    <md-card-content>
+      <div flex class="md-display-2"><b>Quiz Options</b></div>
+      <div flex layout-margin layout-padding class="md-subhead">You're the leader{{qc.currentUser ? ", " + qc.currentUser.username : ", " + qc.inputed.username}}!</div>
 
       <!-- number of questions selector -->
-      <div layout="row">
         <md-input-container>
           <label># of Questions</label>
-          <!-- this should be longer to get the whole label showing -->
-          <input ng-model="qc.numQuestions" type="number" step="5" min="5" max="50">
+          <md-select ng-model="qc.numQuestions">
+            <md-option ng-repeat="x in qc.numQuestionsArray" ng-value="x">
+              {{x}}
+            </md-option>
         </md-input-container>
-      </div>
 
       <!-- category selector -->
-      <div layout="row">
-        <md-input-container>
+        <md-input-container class="selectors">
           <label>Category</label>
           <md-select ng-model="qc.category">
-            <md-option value=""><em>None</em></md-option>
+            <md-option value=""><em>All Categories</em></md-option>
             <md-option ng-repeat="x in qc.categories" ng-value="x">
               {{x.name}}
             </md-option>
           </md-select>
         </md-input-container>
-      </div>
 
       <!-- difficulty selector -->
-      <div layout="row">
         <md-input-container>
-          <!-- <div layout="row" layout-align="space-between center"> -->
+          <label>Difficulty</label>
           <md-select ng-model="qc.difficulty" placeholder="Difficulty">
+            <md-option value=""><em>All Difficulties</em></md-option>
             <md-option value="easy">Easy</md-option>
             <md-option value="medium">Medium</md-option>
             <md-option value="hard">Hard</md-option>
           </md-select>
         </md-input-container>
-      </div>
 
       <!-- type selector -->
-      <div layout="row">
         <md-input-container>
+          <label>Type</label>
           <md-select ng-model="qc.type" placeholder="Type">
+            <md-option value=""><em>All Types</em></md-option>
             <md-option value="multiple">Multiple Choice</md-option>
             <md-option value="boolean">True / False</md-option>
           </md-select>
         </md-input-container>
-      </div>
 
-    </md-card-content>
-  </md-card>
-
-  <button ng-click="qc.endQuiz(); qc.go('/')">Quit Quiz</button>
+<div flex layout-margin layout-align="center space-between">
+  <md-button class="md-raised md-warn md-hue-3" ng-click="qc.endQuiz(); qc.go('/')">Quit Quiz</md-button>
   <md-button class="md-raised md-primary"
     ng-click="qc.beginQuiz(); qc.go('/quiz')">Begin</md-button>
+</div>
+
 </div>

@@ -1,16 +1,12 @@
-<md-toolbar class="md-primary">
-  <div class="md-toolbar-tools">
-    <img flex-offset="35" src="../images/Lightning Round Red.png" alt="Lightning Round">
-  </div>
-</md-toolbar>
+<div layout="row" layout-align="space-between end" layout-padding>
+  <img flex-offset="30" flex="40" src="../images/Lightning Round Red.png" alt="Lightning Round">
+</div>
 
-<div>
+<div class="content" layout="column" layout-margin layout-padding layout-fill layout-align="space-around">
   <form name="login">
-    <input type="text" placeholder="User Name?" ng-model="qc.inputed.username" required>
-    <input type="password" placeholder="Password?" ng-model="qc.inputed.password" required>
-    <button ng-click="qc.loginUser()" ng-disabled="login.$invalid">Login!</button>
-    <!-- add in function to test login -->
-    <!-- <div class="userDiv">Userpage</div> -->
-    <button ng-click="qc.go('/')">Cancel</button>
+    <input layout-margin layout-padding type="text" placeholder="User Name?" ng-model="qc.inputed.username" required>
+<br><input layout-margin layout-padding type="password" placeholder="Password?" ng-model="qc.inputed.password" required>
+<br><md-button layout-margin class="md-raised md-primary mybuttons" ng-click="qc.loginUser()" ng-disabled="login.$invalid">Login!</md-button>
+<br><md-button layout-margin class="md-raised md-warn mybuttons" ng-click="qc.go('/')">Cancel</md-button>
   </form>
 </div>

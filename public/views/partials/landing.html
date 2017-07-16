@@ -1,42 +1,43 @@
-<md-toolbar class="md-primary">
-  <div class="md-toolbar-tools bigLogo">
-    <img flex-offset="5" src="../images/Lightning Round Red.png" alt="Lightning Round">
+<div layout-padding layout-align="center" class="md-toolbar-tools bigLogo">
+    <img src="../images/Lightning Round Red.png" alt="Lightning Round">
   </div>
-</md-toolbar>
 
-<div ng-hide="qc.currentUser" layout="column" layout-align="center center">
+<div class="content" ng-hide="qc.currentUser" layout="column" layout-align="center center" layout-margin layout-padding>
   <!-- div is hidden if logged in -->
-  <div style="margin-top: 50px">
+  <div >
     <form name="guest">
-      <input style="width: 60vw" type="text" placeholder="Guest Name?" ng-model="qc.inputed.username" required>
+      <input style="width: 60vw" type="text" placeholder="Guest name" ng-model="qc.inputed.username" required>
   </div>
   <div>
-    <md-button class="md-raised md-primary landingButton" ng-click="qc.go('/start')" ng-disabled="guest.$invalid">Start as Guest</md-button>
+    <md-button class="md-raised md-primary myButtons landingButtons" ng-click="qc.go('/start')" ng-disabled="guest.$invalid">Start as Guest</md-button>
     </form>
   </div>
-  <div style="margin-top: 10px">
-    Or<md-button class="md-raised md-primary md-hue-3 landingButton registerButton" ng-click="qc.go('/register')">Register a new user!</md-button>
+  <div >
+    <md-button class="md-raised md-primary md-hue-3 myButtons landingButtons" ng-click="qc.go('/register')">New User</md-button>
   </div>
-  <div style="margin-top: 50px; text-align: center">
-    Already registered?
-    <md-button class="md-raised md-primary md-hue-3 landingButton" ng-click="qc.go('/login')">Login!</md-button>
-  </div>
-  <div class="dialog-demo-content" layout="row" layout-wrap layout-margin layout-align="center">
-    <md-button class="md-primary md-raised" ng-click="qc.showAlert($event)">
-      Alert Dialog
-    </md-button>
+  <div style="text-align: center">
+    Already registered?<br>
+    <md-button class="md-raised md-primary md-hue-3 myButtons landingButtons" ng-click="qc.go('/login')">Login!</md-button>
   </div>
 </div>
 
-<div ng-show="qc.currentUser" layout="column" layout-align="space-around center">
-  <div style="margin-top: 50px">
+<div layout-margin layout-padding ng-show="qc.currentUser" layout="column" layout-align="space-around center">
+  <div class="content">
     You're logged in as {{qc.currentUser.username}}.
   </div>
-  <div style="margin-top: 10px">
+  <div>
     <md-button class="md-raised md-primary" ng-click="qc.go('/start')">Start Quiz!</md-button>
   </div>
   <div>
     <md-button class="md-raised md-warn" ng-click="qc.logOut()">Log out</md-button>
   </div>
-  <!-- <div class="userDiv">Userpage</div> -->
+</div>
+
+<div class="bottom" layout="row" layout-wrap layout-margin layout-align="space-around end">
+  <md-button class="md-primary md-hue-2 md-raised myButtons" ng-click="qc.showAlert($event)">
+    How To Play?
+  </md-button>
+  <md-button class="md-primary md-hue-2 md-raised myButtons" ng-click="qc.go('/statsPage')">
+    User Stats
+  </md-button>
 </div>
