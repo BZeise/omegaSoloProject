@@ -26,6 +26,9 @@ app.config(function($routeProvider) {
   }).when('/quizEnd', {
     templateUrl: "views/partials/quizEnd.html",
     controller: "QuizController"
+  }).when('/statsPage', {
+    templateUrl: "views/partials/statsPage.html",
+    controller: "QuizController"
   });
 });
 
