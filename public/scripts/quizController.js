@@ -129,6 +129,8 @@ function QuizController(QuizService, $location, $mdDialog) {
         console.log('vm.currentUser before:', vm.currentUser);
         QuizService.sendStats(vm.currentUser).then(function(response){
           console.log('vm.currentUser after:', vm.currentUser);
+          vm.currentUser = '';
+          vm.currentUser = QuizService.currentUser.data;
         });
         // console.log('vm.inputed.username is:', vm.inputed.username);
         quizStatsForLeaderboard = {
