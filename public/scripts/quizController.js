@@ -126,8 +126,11 @@ function QuizController(QuizService, $location, $mdDialog) {
 
       if (vm.currentUser) {
         vm.currentUser.userStats.totalQuizzes++;
-        QuizService.sendStats(vm.currentUser);
-        console.log('vm.inputed.username is:', vm.inputed.username);
+        console.log('vm.currentUser before:', vm.currentUser);
+        QuizService.sendStats(vm.currentUser).then(function(response){
+          console.log('vm.currentUser after:', vm.currentUser);
+        });
+        // console.log('vm.inputed.username is:', vm.inputed.username);
         quizStatsForLeaderboard = {
           username: vm.currentUser.username,
           score: vm.score,
@@ -334,8 +337,8 @@ function QuizController(QuizService, $location, $mdDialog) {
           // console.log('vm.currentUser is: ', QuizService.currentUser.data);
           vm.currentUser = QuizService.currentUser.data;
         });
-        // start the quiz
-        vm.go('/start');
+        // go to landing
+        vm.go('/');
       } else {
         swal("Whoah there!", "Wrong password?  Have you registered yet?", "error");
       } // end bad log in
@@ -383,6 +386,12 @@ function QuizController(QuizService, $location, $mdDialog) {
         .targetEvent(ev)
     );
   };
+
+  // vm.getStatsForStatPage = function() {
+  //   vm.correctStat = vm.currentUser.correctAnswers;
+  //   vm.totalAnswersStat = vm.currentUser.totalAnswers;
+  //   vm.totalQuizzesStat = vm.currentUser.totalQuizzes;
+  // };
 
 } // end QuizController
 

@@ -40,6 +40,8 @@
 
   sv.sendStats = function( statObj ) {
     return $http.put('/stats', statObj).then(function( response ){
+      console.log('sendStats response is:', response);
+      sv.currentUser = response;
       return response;
     });
   };
