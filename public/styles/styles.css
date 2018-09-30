@@ -20,7 +20,7 @@ img {
 }
 
 .landingButtons {
-  min-width: 60vw;
+  min-width: 20vw;
 }
 
 .endQuizButton {
@@ -43,6 +43,7 @@ span {
 .content {
   background-color: rgba(255, 255, 255, 0.9);
   width: 90vw;
+  max-width: 500px;
   border-radius: 25px;
   margin: 0 auto;
   margin-top: 10px;

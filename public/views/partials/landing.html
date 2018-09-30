@@ -6,7 +6,7 @@
   <!-- div is hidden if logged in -->
   <div >
     <form name="guest">
-      <input style="width: 60vw" type="text" placeholder="Guest name" ng-model="qc.inputed.username" required>
+      <input class="landingButtons" type="text" placeholder="Guest name" ng-model="qc.inputed.username" required>
   </div>
   <div>
     <md-button class="md-raised md-primary myButtons landingButtons" ng-click="qc.go('/start')" ng-disabled="guest.$invalid">Start as Guest</md-button>
