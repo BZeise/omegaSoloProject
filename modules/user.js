@@ -1,4 +1,4 @@
-var mongoose = require( 'mongoose' );
+var mongoose = require( 'mongoose' ); // is this the only place where I use mongoose?
 
 // mongoose.connect( 'localhost:27017/LightningRound' );
 mongoose.connect( 'mongodb://heroku_4b0t62zk:3us4r9ksmsvhfu4kn4qdtrb3uq@ds161162.mlab.com:61162/heroku_4b0t62zk' );
