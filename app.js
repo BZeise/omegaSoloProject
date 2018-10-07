@@ -7,7 +7,7 @@ var stats = require('./modules/routes/stats' );
 var quiz = require('./modules/routes/quiz' );
 var questions = require('./modules/routes/questions' );
 var leaderboard = require('./modules/routes/leaderboard' );
-// add extra routes when needed
+// add extra routes as needed
 
 app.use(express.static('public'));
 app.use( '/', index );
@@ -21,5 +21,5 @@ app.use( '/leaderboard', leaderboard );
 var port = process.env.PORT || 7878;
 
 app.listen( port, function() {
-  console.log( 'server up on port:', port);
+  console.log( 'server up on port:', port );
 });
