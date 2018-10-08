@@ -7,7 +7,7 @@ var stats = require('./modules/routes/stats' );
 var quiz = require('./modules/routes/quiz' );
 var questions = require('./modules/routes/questions' );
 var leaderboard = require('./modules/routes/leaderboard' );
-// add extra routes as needed
+// add extra routes when they are needed
 
 app.use(express.static('public'));
 app.use( '/', index );
