@@ -8,6 +8,7 @@ var quiz = require('./modules/routes/quiz' );
 var questions = require('./modules/routes/questions' );
 var leaderboard = require('./modules/routes/leaderboard' );
 // add extra routes when they are needed
+// green boxes are nice
 
 app.use(express.static('public'));
 app.use( '/', index );
